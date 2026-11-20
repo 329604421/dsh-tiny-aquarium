@@ -126,7 +126,7 @@ function Preview({ initial = 'overlay' }) {
   return React.createElement('div', { className: 'shell', 'data-mode': mode },
     mode === 'page' ? React.createElement('div', { className: 'page-layer' }, React.createElement(Page, { t })) : null,
     mode === 'page' ? null : React.createElement(FakeApp, null),
-    mode === 'page' ? null : React.createElement('div', { className: 'slot-layer' }, React.createElement(Overlay, { t, usePanelInfo: () => 'eco-aquarium' })));
+    mode === 'page' ? null : React.createElement('div', { className: 'slot-layer' }, React.createElement(Overlay, { t, usePanelInfo: () => 'tiny-aquarium' })));
 }
 
 const root = createRoot(document.getElementById('root'));

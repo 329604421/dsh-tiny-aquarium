@@ -46,6 +46,15 @@ export const Config = z.object({
 
 const ROOT = path.resolve(fileURLToPath(new URL('../', import.meta.url)));
 
+/** 日志前缀跟包名走，避免以后改名时又漏一处。 */
+const PLUGIN_NAME = (() => {
+  try {
+    return JSON.parse(readFileSync(path.join(ROOT, 'package.json'), 'utf8')).name;
+  } catch {
+    return 'dsh-tiny-aquarium';
+  }
+})();
+
 /**
  * P5 定制的 skill 清单。正文放在 `skills/<name>/SKILL.md`，打包后一起发；
  * 注册时才把插件根目录的真实绝对路径写进正文——提示词里的 `<ROOT>` 就是它。
@@ -111,7 +120,7 @@ function registerSkills(ctx) {
   for (const skill of SKILLS) {
     const body = loadSkillContent(skill.name);
     if (!body) {
-      ctx.logger?.warn?.(`[eco-aquarium] skill body missing: ${skill.name}`);
+      ctx.logger?.warn?.(`[${PLUGIN_NAME}] skill body missing: ${skill.name}`);
       continue;
     }
     const content = body;
@@ -125,7 +134,7 @@ function registerSkills(ctx) {
     }));
     registered++;
   }
-  ctx.logger?.info?.(`[eco-aquarium] registered ${registered} customization skill(s) from ${ROOT}`);
+  ctx.logger?.info?.(`[${PLUGIN_NAME}] registered ${registered} customization skill(s) from ${ROOT}`);
 }
 
 export function apply(ctx) {

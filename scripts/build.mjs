@@ -8,6 +8,9 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 await mkdir(path.join(root, 'lib'), { recursive: true });
 await mkdir(path.join(root, 'releases'), { recursive: true });
 
+// 模块 id 必须等于 npm 包名（宿主靠它对齐 patch 的 name），所以只在这里读一次。
+const pkg = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8'));
+
 /* ------------------------------------------------------ custom asset bundles */
 /*
  * P5 的定制资产在构建期内联：宿主只提供图片资源路由，`.glb` 必须走 chunk。
@@ -63,7 +66,7 @@ async function bundle(entry, chunk) {
     },
   });
   const registration = chunk ? `,chunk:${JSON.stringify(chunk)}` : '';
-  const code = `window.__ModuleLoader__.load({id:"dsh-eco-aquarium"${registration},factory(require){const module={exports:{}};const exports=module.exports;\n${result.outputFiles[0].text}\nreturn module.exports;}});\n`;
+  const code = `window.__ModuleLoader__.load({id:${JSON.stringify(pkg.name)}${registration},factory(require){const module={exports:{}};const exports=module.exports;\n${result.outputFiles[0].text}\nreturn module.exports;}});\n`;
   await writeFile(path.join(root, 'lib', chunk || 'client.js'), code);
   console.log(`${chunk || 'client.js'}: ${Buffer.byteLength(code)} bytes`);
 }
@@ -72,7 +75,7 @@ await bundle('src/scene.js', 'client.scene.js');
 await bundle('src/client.jsx');
 await copyFile(path.join(root, 'src/host.js'), path.join(root, 'lib/host.js'));
 await copyFile(path.join(root, 'node_modules/three/LICENSE'), path.join(root, 'lib/THREE-LICENSE.txt'));
-const pkg = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8'));
+const buildInfo = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8'));
 await writeFile(path.join(root, 'lib/build-info.json'), JSON.stringify({
-  version: pkg.version, three: pkg.devDependencies.three, hostBaseline: '0.2.2-rc.3', pluginRoot,
+  version: buildInfo.version, three: buildInfo.devDependencies.three, hostBaseline: '0.2.2-rc.3', pluginRoot,
 }, null, 2));

@@ -7,6 +7,7 @@ const url = process.env.DSHAQ_URL;
 if (!url) throw new Error('Set DSHAQ_URL to the URL printed by your isolated official DSH Web host.');
 const out = path.resolve(process.env.DSHAQ_EVIDENCE || 'docs/evidence');
 await fs.mkdir(out, { recursive: true });
+const pkg = JSON.parse(await fs.readFile(new URL('../package.json', import.meta.url), 'utf8'));
 const browser = await chromium.launch({ channel: process.env.DSHAQ_BROWSER || 'msedge', headless: true });
 const context = await browser.newContext({
   viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1,
@@ -86,7 +87,7 @@ try {
     assert.equal(overlap, false, 'entry must not cover the composer send control');
   }
   check('Single visible entry clear of the composer send control', { entryBox, sendBox });
-  const beforeOpen = requests.filter(r => r.includes('/dsh-eco-aquarium/client.scene.js'));
+  const beforeOpen = requests.filter(r => r.includes(`/${pkg.name}/client.scene.js`));
   assert.equal(beforeOpen.length, 0);
   check('Renderer chunk not requested before opening');
   const firstOpenMs = await open();

@@ -14,6 +14,9 @@ import { WELCOME_SCOOPS } from '../src/token-ledger.js';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const require = createRequire(import.meta.url);
 const code = await readFile(path.join(root, 'lib', 'client.js'), 'utf8');
+// 插件 id 由包名推导（去掉 dsh- 前缀），三处断言都从这一份推导，改名时不用再逐处改。
+const pkg = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8'));
+const NS = pkg.name.replace(/^dsh-/, '');
 
 let definition;
 let injectedCss = '';
@@ -29,7 +32,7 @@ globalThis.document = {
   head: { append() {} },
 };
 new Function('window', code)(sandboxWindow);
-assert.equal(definition?.id, 'dsh-eco-aquarium', 'bundle registers under the package name');
+assert.equal(definition?.id, pkg.name, 'bundle registers under the package name');
 
 const client = definition.factory(require);
 assert.equal(typeof client.apply, 'function', 'client exports apply()');
@@ -87,7 +90,7 @@ assert.deepEqual(test.sampleTokens().entries.map(entry => entry.tokens).sort(), 
 
 assert.deepEqual([...registered.keys()].sort(), ['main', 'shell.overlay', 'sidebar.panellist'], 'sidebar row, settings page and floating view');
 const sidebar = registered.get('sidebar.panellist');
-assert.equal(sidebar.options.id, 'eco-aquarium');
+assert.equal(sidebar.options.id, NS);
 assert.equal(sidebar.options.order, 40);
 assert.equal(sidebar.options.label(), '小鱼缸', 'sidebar label is localized');
 const glyph = renderToStaticMarkup(React.createElement(sidebar.component, { size: 18 }));
@@ -95,7 +98,7 @@ assert.match(glyph, /<svg[^>]*width="18"/);
 assert.match(glyph, /stroke="currentColor"/, 'sidebar glyph inherits host color');
 
 const page = registered.get('main');
-assert.equal(page.options.key, 'eco-aquarium', 'page key matches the sidebar id');
+assert.equal(page.options.key, NS, 'page key matches the sidebar id');
 const pageHtml = renderToStaticMarkup(React.createElement(page.component, { t }));
 for (const text of ['小鱼缸', '定制', '显示与光照', '外观与手感', '做一个新的', '打开鱼缸', '灯光模式', '渲染质量',
   'Token 统计', '统计起点', '累计用量', '待投喂', '已兑换', '已投喂', '重置统计']) {
