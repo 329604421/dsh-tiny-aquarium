@@ -7,16 +7,6 @@ DSH 桌面工作台里的透明三维鱼缸。左侧导航栏多一页「定制�
 > - 想定制缸体、灯具、造景、鱼种或投喂习惯 → [AI 定制工厂](https://github.com/329604421/dsh-eco-aquarium/blob/main/docs/P5-AI定制工厂.md)
 > - 想调整投喂手感、受惊动作、接入新鱼或替换鱼食罐指针 → [投喂习惯与动作制作指南](https://github.com/329604421/dsh-eco-aquarium/blob/main/docs/P4-投喂习惯与动作制作指南.md)
 
-## 长什么样
-
-| 投喂：一勺 4 粒，鱼群错峰抢食 | 全屏观赏：可拖动、可放大到 2.2× |
-| --- | --- |
-| ![投喂](https://raw.githubusercontent.com/329604421/dsh-eco-aquarium/main/docs/screenshots/01-feeding.png) | ![全屏](https://raw.githubusercontent.com/329604421/dsh-eco-aquarium/main/docs/screenshots/02-fullscreen.png) |
-| **定制页：五个维度各一行，右边可换现成的或让 AI 做一个新的** | **Token 统计：已兑换 / 已投喂 / 待投喂 三个数能自己对上** |
-| ![定制页](https://raw.githubusercontent.com/329604421/dsh-eco-aquarium/main/docs/screenshots/03-customize.png) | ![Token](https://raw.githubusercontent.com/329604421/dsh-eco-aquarium/main/docs/screenshots/04-token.png) |
-| **灯光跟随宿主深浅色自动判断** | **放大后画面沿圆形边界模糊收边** |
-| ![深色](https://raw.githubusercontent.com/329604421/dsh-eco-aquarium/main/docs/screenshots/05-dark.png) | ![放大](https://raw.githubusercontent.com/329604421/dsh-eco-aquarium/main/docs/screenshots/06-zoom.png) |
-
 ## 安装
 
 在已安装 `dsh` 的环境里二选一：
@@ -41,6 +31,17 @@ dsh plugin --profile desktop add "$PWD"
 > 桌面版是 `desktop`，`dsh web` 命令行版是 `web`。填一个不存在的名字不会报错，只会静默建一个空 profile 并装进去——表现就是「装上了，但界面里什么都看不见」。
 >
 > 这里的 `--profile` 与 `package.json` 里的 `dsh.client.platform: "web"` 是两件不同的事：前者由你选、指 profile 目录；后者由插件声明、只认 `"web"`（桌面版与命令行版共用同一套浏览器界面）。
+
+## 长什么样
+
+| 投喂：一勺 4 粒，鱼群错峰抢食 | 全屏观赏：可拖动、可放大到 2.2× |
+| --- | --- |
+| ![投喂](https://raw.githubusercontent.com/329604421/dsh-eco-aquarium/main/docs/screenshots/01-feeding.png) | ![全屏](https://raw.githubusercontent.com/329604421/dsh-eco-aquarium/main/docs/screenshots/02-fullscreen.png) |
+| **定制页：五个维度各一行，右边可换现成的或让 AI 做一个新的** | **Token 统计：已兑换 / 已投喂 / 待投喂 三个数能自己对上** |
+| ![定制页](https://raw.githubusercontent.com/329604421/dsh-eco-aquarium/main/docs/screenshots/03-customize.png) | ![Token](https://raw.githubusercontent.com/329604421/dsh-eco-aquarium/main/docs/screenshots/04-token.png) |
+| **灯光跟随宿主深浅色自动判断** | **放大后画面沿圆形边界模糊收边** |
+| ![深色](https://raw.githubusercontent.com/329604421/dsh-eco-aquarium/main/docs/screenshots/05-dark.png) | ![放大](https://raw.githubusercontent.com/329604421/dsh-eco-aquarium/main/docs/screenshots/06-zoom.png) |
+
 
 ## 运行环境
 

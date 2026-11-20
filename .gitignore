@@ -22,8 +22,9 @@ docs/代码审查与优化方案-2026-11-20.md
 docs/archive/
 .workbuddy/
 
-# 本机运维脚本（发布通道兜底等），不属于插件本体
+# 本机运维脚本与投稿材料（发布通道兜底、Hub/market 文案），不属于插件本体
 _dev_tools/
+发布/
 
 # 系统垃圾
 .DS_Store
