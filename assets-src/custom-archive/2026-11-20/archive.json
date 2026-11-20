@@ -1,0 +1,30 @@
+[
+  {
+    "id": "fish.gold-probe",
+    "archivedAt": "2026-11-20T06:07:50.885Z",
+    "entry": {
+      "id": "fish.gold-probe",
+      "category": "fish",
+      "version": 1,
+      "sourceType": "glb",
+      "displayName": "测试金鱼",
+      "origin": "custom",
+      "createdAt": "2026-11-20T05:52:43.877Z",
+      "license": "MIT",
+      "author": "probe",
+      "source": "assets-src/models/fish/gold-probe.glb",
+      "file": "custom-bundle",
+      "triangles": 508,
+      "textures": 32,
+      "animations": [],
+      "params": {
+        "targetLength": 0.06,
+        "count": 3,
+        "cruise": 0.7
+      }
+    },
+    "moved": [
+      "assets-src/custom-archive/2026-11-20/gold-probe.glb"
+    ]
+  }
+]

@@ -1,0 +1,98 @@
+{
+  "name": "dsh-eco-aquarium",
+  "version": "0.2.0",
+  "description": "小鱼缸（Tiny Tank）：DSH 桌面工作台里的透明三维鱼缸——造景、鱼群、敲击投喂与 Token 兑换鱼食",
+  "keywords": [
+    "dsh-plugin",
+    "dsh",
+    "deepseek-harness",
+    "aquarium",
+    "three.js",
+    "webgl",
+    "token-usage",
+    "ambient"
+  ],
+  "type": "module",
+  "license": "MIT",
+  "author": "329604421",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/329604421/dsh-eco-aquarium.git"
+  },
+  "homepage": "https://github.com/329604421/dsh-eco-aquarium#readme",
+  "bugs": {
+    "url": "https://github.com/329604421/dsh-eco-aquarium/issues"
+  },
+  "main": "./lib/host.js",
+  "exports": {
+    ".": "./lib/host.js",
+    "./client": "./lib/client.js",
+    "./icon": "./icon.svg",
+    "./locale/*.json": "./locale/*.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "locale",
+    "icon.svg",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE",
+    "presets.json",
+    "skills",
+    "docs/guides"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  },
+  "engines": {
+    "node": ">=22.19"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "dependencies": {
+    "@deepseek-ai/schemastery": "3.19.0"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "smoke": "node scripts/smoke-client.mjs",
+    "preview": "node scripts/preview-panel.mjs",
+    "lab:clown": "node scripts/clownfish-lab.mjs asset",
+    "lab:clown:swim": "node scripts/clownfish-lab.mjs swim",
+    "lab:clown:fins": "node scripts/clownfish-lab.mjs debug",
+    "motion:clown": "node scripts/clownfish-motion.mjs",
+    "lab:neon": "node scripts/neon-tetra-lab.mjs asset",
+    "lab:neon:swim": "node scripts/neon-tetra-lab.mjs swim",
+    "lab:neon:fins": "node scripts/neon-tetra-lab.mjs debug",
+    "lab:neon:raw": "node scripts/neon-tetra-lab.mjs raw",
+    "motion:neon": "node scripts/neon-tetra-motion.mjs",
+    "scape:manifest": "node scripts/sync-scape-manifest.mjs",
+    "probe:scape": "node scripts/scape-probe.mjs",
+    "probe:feeding": "node scripts/feeding-probe.mjs",
+    "probe:tap": "node scripts/tap-probe.mjs",
+    "probe:autofeed": "node scripts/autofeed-probe.mjs",
+    "p5:check": "node scripts/p5-check.mjs",
+    "asset:neon": "python scripts/neon-tetra/polish_photo.py",
+    "asset:clown:photo": "python scripts/clownfish/polish_photo.py",
+    "asset:clown:procedural": "node scripts/clownfish/build.mjs",
+    "check": "npm run test && npm run build && npm run smoke",
+    "verify:host": "node scripts/verify-host.mjs",
+    "pack:plugin": "npm run check && npm pack --pack-destination releases"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12",
+    "playwright": "1.56.1",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "three": "0.180.0"
+  }
+}

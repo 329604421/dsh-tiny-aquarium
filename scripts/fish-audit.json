@@ -1,0 +1,700 @@
+{
+  "generatedAt": "2026-11-19T09:28:34.472Z",
+  "standard": {
+    "common": {
+      "maxTriangles": 4000,
+      "minTriangles": 300,
+      "maxKb": 220
+    },
+    "fish": {
+      "minAspect": 1.5,
+      "maxAspect": 6.5,
+      "needTexture": true,
+      "minTexturePx": 128,
+      "needAnim": true
+    },
+    "bottom": {
+      "minAspect": 1,
+      "maxAspect": 4.5,
+      "needTexture": true,
+      "minTexturePx": 128,
+      "needAnim": false
+    },
+    "upright": {
+      "minAspect": 0.35,
+      "maxAspect": 1.8,
+      "needTexture": true,
+      "minTexturePx": 128,
+      "needAnim": false
+    },
+    "decor": {
+      "minAspect": 0.3,
+      "maxAspect": 3.5,
+      "needTexture": false,
+      "minTexturePx": 0,
+      "needAnim": false
+    }
+  },
+  "reports": [
+    {
+      "file": "anemone.glb",
+      "kb": 72,
+      "nodeScale": 1,
+      "unitSuspect": false,
+      "dimsCm": [
+        245.69,
+        241.58,
+        192.44
+      ],
+      "lengthCm": 245.69,
+      "heightCm": 241.58,
+      "thickCm": 192.44,
+      "aspect": 1.02,
+      "tris": 1024,
+      "modes": [
+        "triangles"
+      ],
+      "attributes": [
+        "POSITION",
+        "NORMAL",
+        "TEXCOORD_0"
+      ],
+      "uv": true,
+      "skinned": false,
+      "materials": [
+        {
+          "name": "Material.011",
+          "textured": true,
+          "color": [
+            1,
+            1,
+            1
+          ],
+          "unlit": false,
+          "doubleSided": false
+        }
+      ],
+      "textures": [
+        {
+          "w": 32,
+          "h": 32,
+          "mime": "image/jpeg"
+        }
+      ],
+      "texturePx": 32,
+      "textured": true,
+      "outlineMats": [],
+      "animations": [],
+      "joints": 0,
+      "extensions": [],
+      "profile": "decor",
+      "override": null,
+      "checks": {
+        "aspect": true,
+        "triangles": true,
+        "weight": true,
+        "texture": true,
+        "animation": true,
+        "swimCycle": true,
+        "rootDrift": true,
+        "noOutline": true
+      },
+      "notes": [],
+      "failures": [],
+      "verdict": "PASS"
+    },
+    {
+      "file": "clownfish-ocellaris.glb",
+      "kb": 901,
+      "nodeScale": 1,
+      "unitSuspect": false,
+      "dimsCm": [
+        100,
+        61.23,
+        29.98
+      ],
+      "lengthCm": 100,
+      "heightCm": 61.23,
+      "thickCm": 29.98,
+      "aspect": 1.63,
+      "tris": 20000,
+      "modes": [
+        "triangles"
+      ],
+      "attributes": [
+        "POSITION",
+        "NORMAL",
+        "TEXCOORD_0"
+      ],
+      "uv": true,
+      "skinned": false,
+      "materials": [
+        {
+          "name": "Material.001",
+          "textured": true,
+          "color": null,
+          "unlit": false,
+          "doubleSided": true
+        }
+      ],
+      "textures": [
+        {
+          "w": 512,
+          "h": 512,
+          "mime": "image/png"
+        },
+        {
+          "w": 1024,
+          "h": 1024,
+          "mime": "image/jpeg"
+        }
+      ],
+      "texturePx": 1024,
+      "textured": true,
+      "outlineMats": [],
+      "animations": [],
+      "joints": 0,
+      "extensions": [],
+      "profile": "fish",
+      "override": {
+        "reason": "本项目自制英雄鱼：用户多视角照片重建的 20k 面写实网格，泳姿由 src/clownfish.js 的分区权重驱动，无烘焙动画"
+      },
+      "checks": {
+        "aspect": true,
+        "triangles": true,
+        "weight": true,
+        "texture": true,
+        "animation": true,
+        "swimCycle": true,
+        "rootDrift": true,
+        "noOutline": true
+      },
+      "notes": [
+        "豁免：本项目自制英雄鱼：用户多视角照片重建的 20k 面写实网格，泳姿由 src/clownfish.js 的分区权重驱动，无烘焙动画"
+      ],
+      "failures": [],
+      "verdict": "PASS"
+    },
+    {
+      "file": "clownfish.glb",
+      "kb": 80,
+      "nodeScale": 100,
+      "unitSuspect": true,
+      "dimsCm": [
+        7.88,
+        4.06,
+        0.96
+      ],
+      "lengthCm": 7.88,
+      "heightCm": 4.06,
+      "thickCm": 0.96,
+      "aspect": 1.94,
+      "tris": 686,
+      "modes": [
+        "triangles"
+      ],
+      "attributes": [
+        "JOINTS_0",
+        "NORMAL",
+        "POSITION",
+        "WEIGHTS_0"
+      ],
+      "uv": false,
+      "skinned": true,
+      "materials": [
+        {
+          "name": "Outline",
+          "textured": false,
+          "color": [
+            0.04,
+            0.04,
+            0.04
+          ],
+          "unlit": false,
+          "doubleSided": false
+        },
+        {
+          "name": "Body",
+          "textured": false,
+          "color": [
+            0.64,
+            0.11,
+            0.01
+          ],
+          "unlit": false,
+          "doubleSided": false
+        },
+        {
+          "name": "Stripes",
+          "textured": false,
+          "color": [
+            0.64,
+            0.61,
+            0.51
+          ],
+          "unlit": false,
+          "doubleSided": false
+        }
+      ],
+      "textures": [],
+      "texturePx": 0,
+      "textured": false,
+      "outlineMats": [],
+      "animations": [
+        {
+          "name": "Armature|Swim",
+          "duration": 1.292,
+          "channels": 3,
+          "paths": {
+            "rotation": 3
+          },
+          "drift": []
+        }
+      ],
+      "joints": 6,
+      "extensions": [],
+      "profile": "fish",
+      "override": null,
+      "checks": {
+        "aspect": true,
+        "triangles": true,
+        "weight": true,
+        "texture": false,
+        "animation": true,
+        "swimCycle": true,
+        "rootDrift": true,
+        "noOutline": true
+      },
+      "notes": [
+        "节点缩放 100×，接入需重标定",
+        "无 UV，贴图只能程序化"
+      ],
+      "failures": [
+        "texture"
+      ],
+      "verdict": "FAIL"
+    },
+    {
+      "file": "crawfish.glb",
+      "kb": 55,
+      "nodeScale": 1,
+      "unitSuspect": false,
+      "dimsCm": [
+        69885.3,
+        27528.6,
+        23456.55
+      ],
+      "lengthCm": 69885.3,
+      "heightCm": 27528.6,
+      "thickCm": 23456.55,
+      "aspect": 2.54,
+      "tris": 1556,
+      "modes": [
+        "triangles"
+      ],
+      "attributes": [
+        "POSITION",
+        "NORMAL",
+        "TEXCOORD_0"
+      ],
+      "uv": true,
+      "skinned": false,
+      "materials": [
+        {
+          "name": "Eyes",
+          "textured": false,
+          "color": [
+            0,
+            0,
+            0
+          ],
+          "unlit": false,
+          "doubleSided": false
+        },
+        {
+          "name": "Armor",
+          "textured": false,
+          "color": [
+            1,
+            0.07,
+            0.02
+          ],
+          "unlit": false,
+          "doubleSided": false
+        },
+        {
+          "name": "Skin",
+          "textured": false,
+          "color": [
+            1,
+            0.48,
+            0.28
+          ],
+          "unlit": false,
+          "doubleSided": false
+        }
+      ],
+      "textures": [],
+      "texturePx": 0,
+      "textured": false,
+      "outlineMats": [],
+      "animations": [],
+      "joints": 0,
+      "extensions": [],
+      "profile": "bottom",
+      "override": null,
+      "checks": {
+        "aspect": true,
+        "triangles": true,
+        "weight": true,
+        "texture": false,
+        "animation": true,
+        "swimCycle": true,
+        "rootDrift": true,
+        "noOutline": true
+      },
+      "notes": [],
+      "failures": [
+        "texture"
+      ],
+      "verdict": "FAIL"
+    },
+    {
+      "file": "goldfish-long.glb",
+      "kb": 37,
+      "nodeScale": 1,
+      "unitSuspect": false,
+      "dimsCm": [
+        57732.8,
+        34983.5,
+        23129.6
+      ],
+      "lengthCm": 57732.8,
+      "heightCm": 34983.5,
+      "thickCm": 23129.6,
+      "aspect": 1.65,
+      "tris": 1036,
+      "modes": [
+        "triangles"
+      ],
+      "attributes": [
+        "POSITION",
+        "NORMAL",
+        "TEXCOORD_0"
+      ],
+      "uv": true,
+      "skinned": false,
+      "materials": [
+        {
+          "name": "default_Mat",
+          "textured": false,
+          "color": [
+            0.5,
+            0.5,
+            0.5
+          ],
+          "unlit": false,
+          "doubleSided": false
+        },
+        {
+          "name": "Mat.3",
+          "textured": false,
+          "color": [
+            0.06,
+            0.06,
+            0.06
+          ],
+          "unlit": false,
+          "doubleSided": false
+        },
+        {
+          "name": "Mat.2",
+          "textured": false,
+          "color": [
+            1,
+            0.82,
+            0.39
+          ],
+          "unlit": false,
+          "doubleSided": false
+        },
+        {
+          "name": "Mat",
+          "textured": false,
+          "color": [
+            0.95,
+            0.35,
+            0.05
+          ],
+          "unlit": false,
+          "doubleSided": false
+        },
+        {
+          "name": "Mat.1",
+          "textured": false,
+          "color": [
+            1,
+            0.92,
+            0.84
+          ],
+          "unlit": false,
+          "doubleSided": false
+        }
+      ],
+      "textures": [],
+      "texturePx": 0,
+      "textured": false,
+      "outlineMats": [],
+      "animations": [],
+      "joints": 0,
+      "extensions": [],
+      "profile": "fish",
+      "override": null,
+      "checks": {
+        "aspect": true,
+        "triangles": true,
+        "weight": true,
+        "texture": false,
+        "animation": false,
+        "swimCycle": false,
+        "rootDrift": true,
+        "noOutline": true
+      },
+      "notes": [],
+      "failures": [
+        "texture",
+        "animation",
+        "swimCycle"
+      ],
+      "verdict": "FAIL"
+    },
+    {
+      "file": "goldfish.glb",
+      "kb": 34,
+      "nodeScale": 1,
+      "unitSuspect": false,
+      "dimsCm": [
+        9556.85,
+        4541.74,
+        2655.17
+      ],
+      "lengthCm": 9556.85,
+      "heightCm": 4541.74,
+      "thickCm": 2655.17,
+      "aspect": 2.1,
+      "tris": 508,
+      "modes": [
+        "triangles"
+      ],
+      "attributes": [
+        "POSITION",
+        "NORMAL",
+        "TEXCOORD_0"
+      ],
+      "uv": true,
+      "skinned": false,
+      "materials": [
+        {
+          "name": "lambert2SG",
+          "textured": true,
+          "color": [
+            1,
+            1,
+            1
+          ],
+          "unlit": false,
+          "doubleSided": false
+        }
+      ],
+      "textures": [
+        {
+          "w": 32,
+          "h": 32,
+          "mime": "image/png"
+        }
+      ],
+      "texturePx": 32,
+      "textured": true,
+      "outlineMats": [],
+      "animations": [],
+      "joints": 0,
+      "extensions": [],
+      "profile": "fish",
+      "override": null,
+      "checks": {
+        "aspect": true,
+        "triangles": true,
+        "weight": true,
+        "texture": false,
+        "animation": false,
+        "swimCycle": false,
+        "rootDrift": true,
+        "noOutline": true
+      },
+      "notes": [],
+      "failures": [
+        "texture",
+        "animation",
+        "swimCycle"
+      ],
+      "verdict": "FAIL"
+    },
+    {
+      "file": "neon-tetra.glb",
+      "kb": 371,
+      "nodeScale": 1,
+      "unitSuspect": false,
+      "dimsCm": [
+        116.55,
+        52.96,
+        20.9
+      ],
+      "lengthCm": 116.55,
+      "heightCm": 52.96,
+      "thickCm": 20.9,
+      "aspect": 2.2,
+      "tris": 10000,
+      "modes": [
+        "triangles"
+      ],
+      "attributes": [
+        "POSITION",
+        "NORMAL",
+        "TEXCOORD_0"
+      ],
+      "uv": true,
+      "skinned": false,
+      "materials": [
+        {
+          "name": "Material.001",
+          "textured": true,
+          "color": null,
+          "unlit": false,
+          "doubleSided": true
+        }
+      ],
+      "textures": [
+        {
+          "w": 256,
+          "h": 256,
+          "mime": "image/jpeg"
+        },
+        {
+          "w": 512,
+          "h": 512,
+          "mime": "image/jpeg"
+        }
+      ],
+      "texturePx": 512,
+      "textured": true,
+      "outlineMats": [],
+      "animations": [],
+      "joints": 0,
+      "extensions": [],
+      "profile": "fish",
+      "override": {
+        "reason": "用户四视图参考的红绿灯：10k 面照片重建网格，5 条共享几何与贴图，泳姿由 src/neon-tetra.js 的分区权重驱动，无烘焙动画"
+      },
+      "checks": {
+        "aspect": true,
+        "triangles": true,
+        "weight": true,
+        "texture": true,
+        "animation": true,
+        "swimCycle": true,
+        "rootDrift": true,
+        "noOutline": true
+      },
+      "notes": [
+        "豁免：用户四视图参考的红绿灯：10k 面照片重建网格，5 条共享几何与贴图，泳姿由 src/neon-tetra.js 的分区权重驱动，无烘焙动画"
+      ],
+      "failures": [],
+      "verdict": "PASS"
+    },
+    {
+      "file": "seahorse.glb",
+      "kb": 36,
+      "nodeScale": 1,
+      "unitSuspect": false,
+      "dimsCm": [
+        49359.3,
+        30013.6,
+        13200
+      ],
+      "lengthCm": 49359.3,
+      "heightCm": 30013.6,
+      "thickCm": 13200,
+      "aspect": 1.64,
+      "tris": 956,
+      "modes": [
+        "triangles"
+      ],
+      "attributes": [
+        "POSITION",
+        "NORMAL",
+        "TEXCOORD_0"
+      ],
+      "uv": true,
+      "skinned": false,
+      "materials": [
+        {
+          "name": "Mat.2",
+          "textured": false,
+          "color": [
+            0.86,
+            0.25,
+            0.02
+          ],
+          "unlit": false,
+          "doubleSided": false
+        },
+        {
+          "name": "Mat",
+          "textured": false,
+          "color": [
+            0.86,
+            0.13,
+            0.02
+          ],
+          "unlit": false,
+          "doubleSided": false
+        },
+        {
+          "name": "Mat.1",
+          "textured": false,
+          "color": [
+            0,
+            0,
+            0
+          ],
+          "unlit": false,
+          "doubleSided": false
+        }
+      ],
+      "textures": [],
+      "texturePx": 0,
+      "textured": false,
+      "outlineMats": [],
+      "animations": [],
+      "joints": 0,
+      "extensions": [],
+      "profile": "upright",
+      "override": null,
+      "checks": {
+        "aspect": true,
+        "triangles": true,
+        "weight": true,
+        "texture": false,
+        "animation": true,
+        "swimCycle": true,
+        "rootDrift": true,
+        "noOutline": true
+      },
+      "notes": [],
+      "failures": [
+        "texture"
+      ],
+      "verdict": "FAIL"
+    }
+  ]
+}

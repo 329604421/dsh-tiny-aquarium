@@ -1,0 +1,31 @@
+# 依赖与构建产物：lib/ 是构建产物，但它必须进仓库 / npm 包，所以不忽略
+node_modules/
+releases/*.tgz
+
+# 本机调试产物（截图、探针录屏、已下线的历史资产）
+.screenshots/
+.probe/
+docs/evidence/
+
+# 素材中间态：137 MB 的参考照片与渲染中间图，不进仓库
+scripts/neon-tetra/source/
+
+# 凭证与本机配置
+.npmrc
+auth.json
+.env
+.env.*
+
+# 内部文档：发布手册（含另一个项目的发布会话细节）与代码审查记录，不进公开仓库
+docs/DSH插件发布-操作手册.md
+docs/代码审查与优化方案-2026-11-20.md
+docs/archive/
+.workbuddy/
+
+# 本机运维脚本（发布通道兜底等），不属于插件本体
+_dev_tools/
+
+# 系统垃圾
+.DS_Store
+Thumbs.db
+*.log

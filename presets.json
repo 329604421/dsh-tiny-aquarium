@@ -1,0 +1,816 @@
+{
+  "version": 1,
+  "units": "cm",
+  "presets": [
+    {
+      "id": "tank.clear-40",
+      "category": "tank",
+      "version": 1,
+      "file": "client.scene.js",
+      "sourceType": "procedural",
+      "displayName": "preset.tank.clear40",
+      "bounds": [
+        40,
+        30,
+        25
+      ],
+      "anchor": "bottom-center",
+      "forward": "+z",
+      "license": "MIT",
+      "author": "DSH Eco Aquarium contributors",
+      "source": "src/scene.js"
+    },
+    {
+      "id": "lamp.arch",
+      "category": "lamp",
+      "version": 1,
+      "file": "client.scene.js",
+      "sourceType": "procedural",
+      "displayName": "preset.lamp.arch",
+      "bounds": [
+        24,
+        37,
+        26
+      ],
+      "anchor": "tank-local",
+      "forward": "-y",
+      "license": "MIT",
+      "author": "DSH Eco Aquarium contributors",
+      "source": "src/scene.js"
+    },
+    {
+      "version": 1,
+      "file": "client.scene.js",
+      "sourceType": "procedural",
+      "bounds": [
+        40,
+        24,
+        24
+      ],
+      "anchor": "tank-local-bottom",
+      "forward": "+y",
+      "origin": "builtin",
+      "license": "MIT",
+      "author": "DSH Eco Aquarium contributors",
+      "source": "src/scape-data.js",
+      "id": "substrate.moss-stones",
+      "category": "substrate",
+      "displayName": "preset.scape.moss",
+      "collision": [
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            -4,
+            7.2,
+            -3
+          ],
+          "size": [
+            8.2,
+            11.2,
+            6.8
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            2.2,
+            4.8,
+            -1.8
+          ],
+          "size": [
+            6.6,
+            6.8,
+            5.8
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            -9.5,
+            3.7,
+            1.6
+          ],
+          "size": [
+            7.4,
+            4.4,
+            5.8
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            7.2,
+            3.1,
+            1.8
+          ],
+          "size": [
+            6.4,
+            3.4,
+            5.2
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            -1.5,
+            2.5,
+            5.8
+          ],
+          "size": [
+            5.2,
+            2.4,
+            3.8
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            12.8,
+            2.4,
+            -5.8
+          ],
+          "size": [
+            4.5,
+            2.6,
+            4
+          ]
+        }
+      ],
+      "params": {
+        "presetId": "scape.moss",
+        "rocks": 6,
+        "woodBranches": 0
+      }
+    },
+    {
+      "version": 1,
+      "file": "client.scene.js",
+      "sourceType": "procedural",
+      "bounds": [
+        40,
+        24,
+        24
+      ],
+      "anchor": "tank-local-bottom",
+      "forward": "+y",
+      "origin": "builtin",
+      "license": "MIT",
+      "author": "DSH Eco Aquarium contributors",
+      "source": "src/scape-data.js",
+      "id": "plant.moss-cover",
+      "category": "plant",
+      "displayName": "preset.scape.moss",
+      "collision": [
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            -10.5,
+            3,
+            6.3
+          ],
+          "radius": 3.52,
+          "height": 2.7
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            7.8,
+            2.9,
+            6.8
+          ],
+          "radius": 3.63,
+          "height": 2.5
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            -13.8,
+            6.4,
+            -5.8
+          ],
+          "radius": 2.47,
+          "height": 9.5
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            12.8,
+            5.65,
+            -6.2
+          ],
+          "radius": 2.24,
+          "height": 8
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            -12.5,
+            5.4,
+            -3.8
+          ],
+          "radius": 2.12,
+          "height": 7.5
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            10.4,
+            4.55,
+            -1.2
+          ],
+          "radius": 2.36,
+          "height": 5.8
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            -1.5,
+            2.55,
+            4.2
+          ],
+          "radius": 3.05,
+          "height": 1.8
+        }
+      ],
+      "params": {
+        "presetId": "scape.moss",
+        "clusters": 7,
+        "leaves": 156,
+        "sway": {
+          "amplitudeCm": 0.38,
+          "frequencyHz": 0.15,
+          "rootWeight": 0,
+          "tipWeight": 1
+        },
+        "maxHeightCm": 20,
+        "maxSpreadCm": 5.4
+      }
+    },
+    {
+      "version": 1,
+      "file": "client.scene.js",
+      "sourceType": "procedural",
+      "bounds": [
+        40,
+        24,
+        24
+      ],
+      "anchor": "tank-local-bottom",
+      "forward": "+y",
+      "origin": "builtin",
+      "license": "MIT",
+      "author": "DSH Eco Aquarium contributors",
+      "source": "src/scape-data.js",
+      "id": "substrate.jungle-stones",
+      "category": "substrate",
+      "displayName": "preset.scape.jungle",
+      "collision": [
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            -2.8,
+            4.5,
+            -3.8
+          ],
+          "size": [
+            6.4,
+            5.8,
+            5.2
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            2.4,
+            3.1,
+            -2.4
+          ],
+          "size": [
+            5.6,
+            3.4,
+            4.8
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            -7.2,
+            2.6,
+            1.8
+          ],
+          "size": [
+            4.4,
+            2.6,
+            3.8
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            9.8,
+            2.5,
+            3.8
+          ],
+          "size": [
+            4.8,
+            2.4,
+            3.6
+          ]
+        }
+      ],
+      "params": {
+        "presetId": "scape.jungle",
+        "rocks": 4,
+        "woodBranches": 0
+      }
+    },
+    {
+      "version": 1,
+      "file": "client.scene.js",
+      "sourceType": "procedural",
+      "bounds": [
+        40,
+        24,
+        24
+      ],
+      "anchor": "tank-local-bottom",
+      "forward": "+y",
+      "origin": "builtin",
+      "license": "MIT",
+      "author": "DSH Eco Aquarium contributors",
+      "source": "src/scape-data.js",
+      "id": "plant.jungle-mix",
+      "category": "plant",
+      "displayName": "preset.scape.jungle",
+      "collision": [
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            -15.2,
+            12.15,
+            -6.8
+          ],
+          "radius": 2.94,
+          "height": 21
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            15.2,
+            11.15,
+            -7
+          ],
+          "radius": 2.59,
+          "height": 19
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            -6.8,
+            9.15,
+            -8.8
+          ],
+          "radius": 2.82,
+          "height": 15
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            6.4,
+            8.65,
+            -8.6
+          ],
+          "radius": 2.7,
+          "height": 14
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            -10.2,
+            6.65,
+            -1.4
+          ],
+          "radius": 2.59,
+          "height": 10
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            -3.8,
+            6.15,
+            -4.8
+          ],
+          "radius": 2.47,
+          "height": 9
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            -1.5,
+            5.25,
+            1.8
+          ],
+          "radius": 2.53,
+          "height": 7.2
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            11.8,
+            5.95,
+            -2.6
+          ],
+          "radius": 2.82,
+          "height": 8.6
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            -11.8,
+            4.65,
+            2.8
+          ],
+          "radius": 2.36,
+          "height": 6
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            -8.8,
+            3.05,
+            7.2
+          ],
+          "radius": 3.98,
+          "height": 2.8
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            7.8,
+            2.9,
+            7.6
+          ],
+          "radius": 3.86,
+          "height": 2.5
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            1.2,
+            2.55,
+            5.8
+          ],
+          "radius": 3.17,
+          "height": 1.8
+        }
+      ],
+      "params": {
+        "presetId": "scape.jungle",
+        "clusters": 12,
+        "leaves": 291,
+        "sway": {
+          "amplitudeCm": 0.38,
+          "frequencyHz": 0.15,
+          "rootWeight": 0,
+          "tipWeight": 1
+        },
+        "maxHeightCm": 20,
+        "maxSpreadCm": 5.4
+      }
+    },
+    {
+      "version": 1,
+      "file": "client.scene.js",
+      "sourceType": "procedural",
+      "bounds": [
+        40,
+        24,
+        24
+      ],
+      "anchor": "tank-local-bottom",
+      "forward": "+y",
+      "origin": "builtin",
+      "license": "MIT",
+      "author": "DSH Eco Aquarium contributors",
+      "source": "src/scape-data.js",
+      "id": "substrate.driftwood-stones",
+      "category": "substrate",
+      "displayName": "preset.scape.driftwood",
+      "collision": [
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            10.8,
+            2.9,
+            -1.8
+          ],
+          "size": [
+            7.2,
+            3.2,
+            5.8
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            5.2,
+            2.4,
+            3.8
+          ],
+          "size": [
+            5.4,
+            2.2,
+            4.2
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            -8.5,
+            3.2,
+            -2.8
+          ],
+          "size": [
+            5.6,
+            3.8,
+            4.6
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            -2.8,
+            2.1,
+            6.8
+          ],
+          "size": [
+            3.8,
+            1.6,
+            3
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            7.15,
+            10.15,
+            -3.25
+          ],
+          "size": [
+            10.5,
+            20.7,
+            6.3
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            2.5,
+            12.1,
+            -2.6
+          ],
+          "size": [
+            9.3,
+            9.3,
+            2.7
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            10.5,
+            14.8,
+            -4.2
+          ],
+          "size": [
+            10.76,
+            6.56,
+            2.56
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            5.8,
+            2.5,
+            0.5
+          ],
+          "size": [
+            9.4,
+            3.4,
+            6.8
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            13.9,
+            2.25,
+            0.2
+          ],
+          "size": [
+            8.1,
+            2.8,
+            6.3
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            12.2,
+            7.4,
+            -1
+          ],
+          "size": [
+            9.44,
+            5.04,
+            4.24
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            1.8,
+            13.95,
+            -1.5
+          ],
+          "size": [
+            1.92,
+            6.22,
+            2.52
+          ]
+        },
+        {
+          "type": "box",
+          "kind": "solid",
+          "center": [
+            14.8,
+            14.05,
+            -3.5
+          ],
+          "size": [
+            4.56,
+            1.86,
+            2.36
+          ]
+        }
+      ],
+      "params": {
+        "presetId": "scape.driftwood",
+        "rocks": 4,
+        "woodBranches": 8
+      }
+    },
+    {
+      "version": 1,
+      "file": "client.scene.js",
+      "sourceType": "procedural",
+      "bounds": [
+        40,
+        24,
+        24
+      ],
+      "anchor": "tank-local-bottom",
+      "forward": "+y",
+      "origin": "builtin",
+      "license": "MIT",
+      "author": "DSH Eco Aquarium contributors",
+      "source": "src/scape-data.js",
+      "id": "plant.driftwood-sparse",
+      "category": "plant",
+      "displayName": "preset.scape.driftwood",
+      "collision": [
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            12.8,
+            4.95,
+            3.2
+          ],
+          "radius": 2.7,
+          "height": 6.6
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            -8.8,
+            4.15,
+            -1.8
+          ],
+          "radius": 2.24,
+          "height": 5
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            -13.2,
+            6.15,
+            -5.8
+          ],
+          "radius": 2.36,
+          "height": 9
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            4.2,
+            5.15,
+            -7.8
+          ],
+          "radius": 2.12,
+          "height": 7
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            -10.6,
+            3.25,
+            6.8
+          ],
+          "radius": 3.52,
+          "height": 3.2
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            5.2,
+            2.9,
+            6.8
+          ],
+          "radius": 3.17,
+          "height": 2.5
+        },
+        {
+          "type": "cylinder",
+          "kind": "soft",
+          "center": [
+            1.8,
+            4.9,
+            -6.8
+          ],
+          "radius": 2.24,
+          "height": 6.5
+        }
+      ],
+      "params": {
+        "presetId": "scape.driftwood",
+        "clusters": 7,
+        "leaves": 133,
+        "sway": {
+          "amplitudeCm": 0.38,
+          "frequencyHz": 0.15,
+          "rootWeight": 0,
+          "tipWeight": 1
+        },
+        "maxHeightCm": 20,
+        "maxSpreadCm": 5.4
+      }
+    }
+  ]
+}

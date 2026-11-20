@@ -1,0 +1,511 @@
+﻿/* Eco aquarium: floating play view (glassy veil over the app) + settings page. */
+.dsh-aq-page,
+.dsh-aq-overlay {
+  --aq-ink: #26382f;
+  --aq-muted: #5d6f63;
+  --aq-line: #7f90822e;
+  --aq-card: #f7f8f2;
+  --aq-accent: #a3613a;
+  --aq-veil: rgba(232, 238, 229, 0.8);
+  --aq-haze: rgba(255, 255, 255, 0.5);
+  --aq-stage-top: #eef3ea;
+  --aq-stage-bottom: #d3dfd1;
+  --aq-water: #3f9b8a;
+  box-sizing: border-box;
+  color: var(--aq-ink);
+  font-family: var(--dsw-font-family, "Segoe UI", "Microsoft YaHei", sans-serif);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.dsh-aq-page[data-dark='true'],
+.dsh-aq-overlay[data-dark='true'] {
+  --aq-ink: #e6ebde;
+  --aq-muted: #a3b2a4;
+  --aq-line: #c8d6c426;
+  --aq-card: #1b2620;
+  --aq-accent: #e0aa7c;
+  --aq-veil: rgba(7, 13, 10, 0.78);
+  --aq-haze: rgba(255, 255, 255, 0.08);
+  --aq-stage-top: #1c2822;
+  --aq-stage-bottom: #0f1813;
+  --aq-water: #61c2ab;
+}
+.dsh-aq-page *,
+.dsh-aq-overlay * { box-sizing: border-box; }
+
+/* The play view always dims the app with a deep, see-through veil, so the
+   clear glass keeps an edge in the light theme too. */
+.dsh-aq-overlay {
+  --aq-veil: rgba(23, 41, 32, 0.54);
+  --aq-on-veil: #eef3ea;
+  --aq-on-veil-muted: #b3c2b7;
+  --aq-haze: rgba(255, 255, 255, 0.07);
+  color: var(--aq-on-veil);
+}
+.dsh-aq-overlay[data-dark='true'] {
+  --aq-veil: rgba(3, 9, 6, 0.72);
+  --aq-on-veil: #e6ebde;
+  --aq-on-veil-muted: #a3b2a4;
+  --aq-haze: rgba(255, 255, 255, 0.05);
+}
+
+/* ------------------------------------------------------- floating entry */
+/* The button is the tank. Water rises inside the whole circle and reaches the
+   rim when one 5M block fills up; the logo keeps its original line art on top
+   of the water, and the badge counts the pellets that block turned into. */
+.dsh-aq-entry {
+  --aq-entry-water: #3f9b8a;
+  --aq-jar: #b77a45;
+  position: absolute;
+  right: 22px;
+  bottom: 102px;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  padding: 0;
+  border: 1px solid #7694875c;
+  border-radius: 50%;
+  background: var(--dsw-bg-elevated, #f5f4ee);
+  color: var(--dsw-text-primary, #304b40);
+  font: inherit;
+  box-shadow: 0 6px 22px #1b30241c;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: box-shadow 200ms ease, transform 200ms ease, border-color 200ms ease;
+}
+.dsh-aq-entry:hover { box-shadow: 0 9px 26px #1b302426; transform: translateY(-1px); }
+.dsh-aq-entry[data-level='full'] {
+  border-color: color-mix(in srgb, var(--aq-jar) 62%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--aq-jar) 14%, transparent), 0 9px 26px #1b302426;
+}
+/* The logo rides above the water so it stays legible as the level climbs. */
+.dsh-aq-entry > svg { position: relative; z-index: 1; }
+.dsh-aq-entry-fill {
+  position: absolute;
+  inset: 1px;
+  overflow: hidden;
+  border-radius: 50%;
+  pointer-events: none;
+}
+/* One filled path for the whole body of water: the crest is part of the same
+   fill, so no second translucent layer can stack alpha into a hard surface
+   line. The level only ever moves by transform. */
+.dsh-aq-entry-water {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: transform 900ms cubic-bezier(0.25, 0.8, 0.3, 1), opacity 420ms ease;
+}
+.dsh-aq-entry:focus-visible,
+.dsh-aq-overlay :focus-visible,
+.dsh-aq-page :focus-visible { outline: 3px solid var(--aq-accent); outline-offset: 3px; }
+
+/* Fish-food amber, not a warning red: the badge counts pellets. */
+.dsh-aq-entry-badge {
+  position: absolute;
+  z-index: 2;
+  top: -4px;
+  right: -4px;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border: 1.5px solid var(--dsw-bg-elevated, #f5f4ee);
+  border-radius: 9px;
+  background: var(--aq-jar, #b77a45);
+  color: #fffdf7;
+  font-size: 10px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: 0.1px;
+  pointer-events: none;
+}
+.dsh-aq-entry-badge[data-pop='true'] { animation: dsh-aq-badge-pop 900ms cubic-bezier(0.2, 0.9, 0.3, 1); }
+@keyframes dsh-aq-badge-pop {
+  0% { transform: scale(0.6); }
+  45% { transform: scale(1.26); }
+  100% { transform: scale(1); }
+}
+
+/* --------------------------------------------------------- play view */
+.dsh-aq-overlay {
+  position: absolute;
+  inset: var(--dsh-frame-chrome-top, 0px) 0 0 var(--dsh-windows-sidebar-width, 0px);
+  overflow: hidden;
+  isolation: isolate;
+  /* The mask the tank reads against: a translucent wash plus a real blur of
+     whatever the app shows underneath, so page text never competes. */
+  background: var(--aq-veil);
+  -webkit-backdrop-filter: blur(20px) saturate(1.05);
+  backdrop-filter: blur(20px) saturate(1.05);
+  pointer-events: auto;
+}
+.dsh-aq-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(62% 50% at 50% 44%, var(--aq-haze), transparent 72%),
+    radial-gradient(120% 90% at 50% 108%, rgba(12, 34, 22, 0.16), transparent 64%);
+}
+.dsh-aq-overlay .dsh-aq-heading { position: absolute; left: 32px; top: 28px; pointer-events: none; z-index: 1; }
+.dsh-aq-overlay .dsh-aq-heading h2 { margin: 0; font-family: "Iowan Old Style", "Palatino Linotype", "Songti SC", "SimSun", serif; font-size: 30px; font-weight: 400; letter-spacing: 2px; }
+.dsh-aq-overlay .dsh-aq-heading p:last-child { margin: 9px 0 0; font-size: 12px; letter-spacing: 0.5px; color: var(--aq-on-veil-muted); }
+.dsh-aq-overlay button,
+.dsh-aq-overlay select { font: inherit; color: inherit; }
+.dsh-aq-close {
+  position: absolute; top: 26px; right: 26px; z-index: 3;
+  display: grid; place-items: center; width: 38px; height: 38px;
+  border: 1px solid var(--aq-line); border-radius: 50%;
+  background: var(--aq-card); color: var(--aq-ink); cursor: pointer;
+}
+.dsh-aq-close svg { width: 17px; height: 17px; }
+/* The shared button rule inherits the veil color; the close chip sits on a card. */
+.dsh-aq-overlay .dsh-aq-close { color: var(--aq-ink); }
+.dsh-aq-overlay .dsh-aq-stage { position: absolute; inset: 84px 18px 0; touch-action: none; }
+.dsh-aq-overlay .dsh-aq-stage canvas { display: block; width: 100%; height: 100%; touch-action: none; outline: none; }
+.dsh-aq-overlay .dsh-aq-caption { position: absolute; left: 32px; bottom: 104px; pointer-events: none; color: var(--aq-on-veil-muted); font-size: 11px; letter-spacing: 0.8px; }
+.dsh-aq-overlay .dsh-aq-caption strong { display: block; margin-bottom: 5px; font-size: 12px; font-weight: 500; color: var(--aq-on-veil); }
+.dsh-aq-overlay .dsh-aq-badge { position: absolute; right: 32px; bottom: 104px; color: var(--aq-on-veil-muted); font-size: 10px; font-variant-numeric: tabular-nums; pointer-events: none; }
+/* 出处说明：左下角两行小字，压在操作提示上方；窄窗口里也不隐藏。
+   和底部提示同样加一层柔和阴影，免得小字被玻璃与水的亮部吃掉。 */
+.dsh-aq-overlay .dsh-aq-credit { position: absolute; left: 32px; bottom: 46px; max-width: 440px; margin: 0; color: var(--aq-on-veil-muted); font-size: 11px; line-height: 1.75; letter-spacing: 0.2px; text-shadow: 0 1px 10px var(--aq-veil), 0 0 18px var(--aq-veil); pointer-events: none; }
+.dsh-aq-overlay .dsh-aq-tools {
+  position: absolute; left: 22px; top: 50%; z-index: 2;
+  display: flex; flex-direction: column; align-items: stretch; gap: 6px;
+  width: 104px; padding: 10px;
+  border: 1px solid var(--aq-line); border-radius: 22px;
+  background: var(--aq-card); box-shadow: 0 12px 40px #132a1614; color: var(--aq-ink);
+  transform: translateY(-50%);
+}
+.dsh-aq-overlay .dsh-aq-tool {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 10px 6px; border: 1px solid transparent; border-radius: 14px;
+  background: none; text-align: center; cursor: pointer;
+}
+.dsh-aq-overlay .dsh-aq-tool:hover { background: #81987416; }
+.dsh-aq-overlay .dsh-aq-tool[aria-pressed='true'] { border-color: #b47a4466; background: #b47a441c; }
+.dsh-aq-overlay .dsh-aq-tool svg { flex: none; width: 24px; height: 24px; }
+.dsh-aq-overlay .dsh-aq-tool strong { display: block; font-size: 12px; font-weight: 500; }
+.dsh-aq-overlay .dsh-aq-tool small { display: block; margin-top: 2px; color: var(--aq-muted); font-size: 9.5px; }
+.dsh-aq-overlay .dsh-aq-auto { padding: 0 0 6px; border: 0; background: none; color: var(--aq-accent); font-size: 10.5px; cursor: pointer; }
+/* Token statistics replaced the rendering-quality select here; quality now
+   lives in the settings page, where an irreversible reset does not belong. */
+.dsh-aq-overlay .dsh-aq-token {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 9px 2px 2px; border-top: 1px solid var(--aq-line);
+  color: var(--aq-muted); font-size: 9.5px; text-align: center;
+}
+.dsh-aq-overlay .dsh-aq-token-label { letter-spacing: 0.5px; }
+.dsh-aq-overlay .dsh-aq-token-value { color: var(--aq-ink); font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.dsh-aq-overlay .dsh-aq-token small { color: var(--aq-muted); font-size: 9px; line-height: 1.35; font-variant-numeric: tabular-nums; }
+.dsh-aq-overlay .dsh-aq-token-bar { position: relative; display: block; width: 100%; height: 5px; margin-top: 4px; border-radius: 3px; overflow: hidden; background: #81987424; }
+.dsh-aq-overlay .dsh-aq-token-bar i { position: absolute; inset: 0; border-radius: 3px; background: #3f9b8a; transform-origin: left; transition: transform 900ms cubic-bezier(0.25, 0.8, 0.3, 1); }
+.dsh-aq-overlay .dsh-aq-token-reset {
+  width: 100%; margin-top: 5px; padding: 4px 0;
+  border: 1px solid var(--aq-line); border-radius: 8px;
+  background: transparent; color: var(--aq-muted);
+  font-size: 10px; line-height: 1.3; cursor: pointer;
+}
+.dsh-aq-overlay .dsh-aq-token-reset:hover { color: var(--aq-ink); border-color: #b47a4466; }
+.dsh-aq-overlay .dsh-aq-token-reset[data-armed='true'] { border-color: #b4483a8c; background: #b4483a1c; color: #a4413a; }
+.dsh-aq-overlay .dsh-aq-token-reset:disabled { opacity: 0.5; cursor: default; }
+.dsh-aq-zoom-readout {
+  display: block; padding-top: 6px; margin-top: 2px;
+  border-top: 1px solid var(--aq-line);
+  color: var(--aq-muted); font-size: 10.5px; text-align: center; font-variant-numeric: tabular-nums;
+}
+
+/* Zoom boundary: a blurred circle that only appears as the view approaches
+   the closest allowed size, so the limit is visible instead of abrupt. */
+.dsh-aq-zoom-guide {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  opacity: calc(var(--zoom-progress, 0) * 0.9);
+  transition: opacity 240ms ease;
+  filter: blur(14px);
+  background: radial-gradient(circle 58vh at 50% 50%,
+    transparent 66%,
+    rgba(10, 22, 16, 0.16) 90%,
+    rgba(10, 22, 16, 0.3) 100%);
+}
+.dsh-aq-overlay .dsh-aq-hint { position: absolute; left: 12px; right: 12px; bottom: 16px; text-shadow: 0 1px 10px var(--aq-veil), 0 0 18px var(--aq-veil); margin: 0; color: var(--aq-on-veil-muted); font-size: 11px; letter-spacing: 0.4px; text-align: center; pointer-events: none; }
+.dsh-aq-overlay .dsh-aq-status { position: absolute; left: 50%; bottom: 104px; width: max-content; max-width: 80%; min-height: 18px; color: var(--aq-on-veil); font-size: 12px; text-align: center; pointer-events: none; transform: translateX(-50%); }
+.dsh-aq-overlay .dsh-aq-status:not(:empty) { padding: 7px 14px; border-radius: 20px; background: var(--aq-card); color: var(--aq-ink); }
+.dsh-aq-overlay .dsh-aq-loading { position: absolute; inset: 0; display: grid; place-items: center; color: var(--aq-on-veil-muted); font-size: 13px; letter-spacing: 1px; pointer-events: none; }
+.dsh-aq-overlay .dsh-aq-error { position: absolute; left: 50%; top: 43%; z-index: 2; width: min(420px, 80%); padding: 28px; border: 1px solid var(--aq-line); border-radius: 18px; background: var(--aq-card); color: var(--aq-ink); text-align: center; transform: translate(-50%, -50%); }
+.dsh-aq-overlay .dsh-aq-error h3 { margin: 0 0 14px; font-size: 17px; font-weight: 500; }
+.dsh-aq-overlay .dsh-aq-error p { font-size: 13px; line-height: 1.8; color: var(--aq-muted); }
+.dsh-aq-overlay .dsh-aq-error button { margin: 5px; padding: 8px 20px; border: 1px solid var(--aq-line); border-radius: 9px; background: transparent; cursor: pointer; }
+.dsh-aq-overlay .dsh-aq-error details { margin-top: 14px; color: var(--aq-muted); font-size: 11px; text-align: left; overflow-wrap: anywhere; }
+.dsh-aq-overlay .dsh-aq-error pre { white-space: pre-wrap; }
+
+/* ------------------------------------------------------- settings page */
+/* The host hands the main slot a fixed-height flex column (`.mainPanel`) and
+   clips the centre column, so nothing above the page scrolls: the page has to
+   own its scroll. It fills the panel and scrolls inside; the side padding
+   centres the 880px reading measure without inserting a wrapper, so the bar
+   stays at the window edge instead of floating mid-screen. */
+.dsh-aq-page {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 30px max(34px, calc((100% - 880px) / 2)) 44px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+}
+.dsh-aq-page .dsh-aq-head { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+.dsh-aq-page .dsh-aq-mark {
+  display: grid; place-items: center; flex: none;
+  width: 46px; height: 46px;
+  border: 1px solid var(--aq-line); border-radius: 15px;
+  color: var(--aq-accent);
+  background: linear-gradient(150deg, var(--aq-stage-top), var(--aq-stage-bottom));
+}
+.dsh-aq-page .dsh-aq-heading { min-width: 0; }
+.dsh-aq-page .dsh-aq-heading h1 { margin: 0; font-family: "Iowan Old Style", "Palatino Linotype", "Songti SC", "SimSun", serif; font-size: 26px; font-weight: 500; letter-spacing: 1.5px; }
+/* 页名与页别同一号字，只用一个间隔点分开；点是陪衬，用弱色。 */
+.dsh-aq-page .dsh-aq-heading h1 .dsh-aq-h1-sep { margin: 0 9px; color: var(--aq-muted); }
+.dsh-aq-page .dsh-aq-lede { margin: 4px 0 0; font-size: 12px; letter-spacing: 0.4px; color: var(--aq-muted); }
+/* The token numbers sit above the fold: opening the page should show the one
+   thing that changes every day, not only a settings list that never moves. */
+.dsh-aq-page .dsh-aq-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px 16px;
+  margin: 0 0 18px;
+  padding: 14px 20px 16px;
+  border: 1px solid var(--aq-line);
+  border-radius: 18px;
+  background: var(--aq-card);
+}
+.dsh-aq-page .dsh-aq-strip-item { display: grid; gap: 1px; min-width: 0; }
+.dsh-aq-page .dsh-aq-strip-item span { font-size: 11px; letter-spacing: 1.1px; text-transform: uppercase; color: var(--aq-muted); }
+.dsh-aq-page .dsh-aq-strip-item strong {
+  font-size: 21px; font-weight: 600; letter-spacing: -0.3px; font-variant-numeric: tabular-nums;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.dsh-aq-page .dsh-aq-strip-item em { margin-left: 3px; font-style: normal; font-size: 12px; font-weight: 500; letter-spacing: 0.2px; color: var(--aq-muted); }
+.dsh-aq-page .dsh-aq-strip-bar {
+  grid-column: 1 / -1;
+  height: 4px; margin-top: 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--aq-ink) 10%, transparent);
+  overflow: hidden;
+}
+.dsh-aq-page .dsh-aq-strip-bar i {
+  display: block; height: 100%; border-radius: inherit;
+  background: var(--aq-water);
+  transform-origin: left;
+  transition: transform 600ms cubic-bezier(0.25, 0.8, 0.3, 1);
+}
+.dsh-aq-page .dsh-aq-blocks { display: flex; flex-direction: column; gap: 14px; }
+.dsh-aq-page .dsh-aq-block { padding: 6px 20px 8px; border: 1px solid var(--aq-line); border-radius: 18px; background: var(--aq-card); }
+.dsh-aq-page .dsh-aq-block h2 { margin: 14px 0 4px; font-size: 11px; font-weight: 600; letter-spacing: 1.8px; text-transform: uppercase; color: var(--aq-muted); }
+.dsh-aq-page .dsh-aq-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 13px 0; border-top: 1px solid var(--aq-line); }
+.dsh-aq-page .dsh-aq-block h2 + .dsh-aq-row { border-top: 0; }
+.dsh-aq-page .dsh-aq-row-main { min-width: 0; }
+.dsh-aq-page .dsh-aq-row-main strong,
+.dsh-aq-page .dsh-aq-row-main label { display: block; font-size: 13px; font-weight: 500; color: var(--aq-ink); }
+.dsh-aq-page .dsh-aq-row-main small { display: block; margin-top: 3px; font-size: 11px; line-height: 1.6; color: var(--aq-muted); }
+.dsh-aq-page .dsh-aq-row select {
+  flex: none;
+  min-width: 132px;
+  padding: 7px 10px;
+  border: 1px solid var(--aq-line);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--aq-ink);
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+.dsh-aq-page .dsh-aq-row select:disabled { opacity: 0.55; cursor: default; }
+.dsh-aq-page .dsh-aq-row select option { background: var(--aq-card); color: var(--aq-ink); }
+.dsh-aq-page .dsh-aq-soon {
+  flex: none;
+  padding: 5px 11px;
+  border: 1px dashed var(--aq-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--aq-muted);
+  font: inherit;
+  font-size: 11px;
+  cursor: not-allowed;
+}
+.dsh-aq-page .dsh-aq-value { flex: none; color: var(--aq-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.dsh-aq-page .dsh-aq-danger {
+  flex: none;
+  padding: 7px 14px;
+  border: 1px solid var(--aq-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--aq-muted);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+.dsh-aq-page .dsh-aq-danger:hover { color: var(--aq-ink); border-color: #b47a4466; }
+.dsh-aq-page .dsh-aq-danger[data-armed='true'] { border-color: #b4483a99; background: #b4483a18; color: #a4413a; }
+.dsh-aq-page .dsh-aq-danger:disabled { opacity: 0.55; cursor: default; }
+.dsh-aq-page[data-dark='true'] .dsh-aq-danger[data-armed='true'] { color: #efb4a7; }
+
+/* 定制入口。水色描边而不是品牌棕，和危险按钮区分开。 */
+.dsh-aq-page .dsh-aq-note { margin: 8px 0 2px; color: var(--aq-muted); font-size: 11.5px; line-height: 1.7; }
+.dsh-aq-page .dsh-aq-block-ai {
+  background: linear-gradient(150deg, color-mix(in srgb, var(--aq-water) 9%, var(--aq-card)), var(--aq-card) 58%);
+  border-color: color-mix(in srgb, var(--aq-water) 28%, var(--aq-line));
+}
+.dsh-aq-page .dsh-aq-row-tail {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+/* 五个维度合成一块后每行左右更挤：窄窗口让「当前值」与按钮换到下一行。 */
+/* 选择框定宽，五行右缘才对得齐；不定宽时每个下拉按内容伸缩，看着像没对齐。 */
+.dsh-aq-page .dsh-aq-block-ai .dsh-aq-row-tail select { width: 168px; }
+@media (max-width: 720px) {
+  /* 不强行让控件占满一行：640px 左右的正文宽度其实还放得下「文字 + 控件 + 按钮」，
+     只有真的挤不下时才换行，换行后靠 margin-left:auto 继续右对齐。 */
+  .dsh-aq-page .dsh-aq-row-tail { margin-left: auto; }
+  .dsh-aq-page .dsh-aq-row[data-dimension-row] { flex-wrap: wrap; }
+  .dsh-aq-page .dsh-aq-row[data-dimension-row] > .dsh-aq-row-main { flex: 1 1 auto; }
+}
+.dsh-aq-page .dsh-aq-custom {
+  flex: none;
+  padding: 7px 14px;
+  border: 1px solid color-mix(in srgb, var(--aq-water) 46%, transparent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--aq-water);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+.dsh-aq-page .dsh-aq-custom:hover { background: color-mix(in srgb, var(--aq-water) 12%, transparent); }
+.dsh-aq-page .dsh-aq-custom:disabled { opacity: 0.55; cursor: default; }
+.dsh-aq-page .dsh-aq-row-sub { padding-left: 14px; border-top-style: dashed; }
+.dsh-aq-page .dsh-aq-row-sub .dsh-aq-row-main strong { font-size: 12.5px; }
+.dsh-aq-page .dsh-aq-toggle {
+  flex: none;
+  padding: 5px 12px;
+  border: 1px solid var(--aq-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--aq-muted);
+  font: inherit;
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+.dsh-aq-page .dsh-aq-toggle[data-on='true'] {
+  border-color: color-mix(in srgb, var(--aq-water) 50%, transparent);
+  background: color-mix(in srgb, var(--aq-water) 13%, transparent);
+  color: var(--aq-water);
+}
+.dsh-aq-page .dsh-aq-toggle:disabled { opacity: 0.55; cursor: default; }
+.dsh-aq-page .dsh-aq-cta {
+  display: flex; align-items: center; justify-content: space-between; gap: 18px;
+  margin-top: 16px; padding: 16px 20px;
+  border: 1px solid var(--aq-line); border-radius: 18px;
+  background: linear-gradient(120deg, var(--aq-stage-top), var(--aq-stage-bottom));
+}
+.dsh-aq-page .dsh-aq-cta strong { display: block; font-size: 13px; font-weight: 500; }
+.dsh-aq-page .dsh-aq-cta p { margin: 4px 0 0; font-size: 11.5px; color: var(--aq-muted); }
+.dsh-aq-primary {
+  flex: none;
+  padding: 9px 20px;
+  border: 1px solid #00000022;
+  border-radius: 999px;
+  background: var(--aq-accent);
+  color: #fffaf4;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.dsh-aq-primary:hover { filter: brightness(1.06); }
+.dsh-aq-page[data-dark='true'] .dsh-aq-primary { border-color: #00000033; color: #2a1d14; }
+.dsh-aq-page .dsh-aq-status-line { margin: 14px 2px 0; color: var(--aq-muted); font-size: 11.5px; letter-spacing: 0.3px; }
+
+/* --------------------------------------------------------- responsive */
+@media (max-width: 900px) {
+  .dsh-aq-overlay .dsh-aq-tools { left: 12px; width: 86px; padding: 8px; gap: 4px; }
+  .dsh-aq-overlay .dsh-aq-tool { padding: 8px 4px; }
+  .dsh-aq-overlay .dsh-aq-tool strong { font-size: 11.5px; }
+  .dsh-aq-overlay .dsh-aq-caption { left: 20px; }
+  .dsh-aq-overlay .dsh-aq-credit { left: 20px; }
+  .dsh-aq-overlay .dsh-aq-caption,
+  .dsh-aq-overlay .dsh-aq-badge { display: none; }
+}
+@media (max-width: 767px) {
+  .dsh-aq-overlay { left: 0; }
+  .dsh-aq-overlay .dsh-aq-heading { left: 22px; top: 23px; }
+  .dsh-aq-overlay .dsh-aq-heading h2 { font-size: 25px; }
+  .dsh-aq-overlay .dsh-aq-heading p:last-child { display: none; }
+  .dsh-aq-overlay .dsh-aq-stage { inset: 80px 0 0; }
+  .dsh-aq-overlay .dsh-aq-tools { left: 14px; width: 74px; padding: 6px; }
+  .dsh-aq-overlay .dsh-aq-tool { padding: 7px 2px; }
+  .dsh-aq-overlay .dsh-aq-tool svg { width: 21px; height: 21px; }
+  .dsh-aq-overlay .dsh-aq-tool small { display: none; }
+  .dsh-aq-overlay .dsh-aq-caption { left: 22px; bottom: 180px; }
+  .dsh-aq-overlay .dsh-aq-credit { left: 22px; bottom: 40px; max-width: 74vw; }
+  .dsh-aq-overlay .dsh-aq-badge { right: 22px; bottom: 180px; }
+  .dsh-aq-page { padding: 22px 18px 32px; }
+}
+@media (max-width: 640px) {
+  .dsh-aq-overlay .dsh-aq-tools { width: 52px; padding: 5px; border-radius: 16px; }
+  .dsh-aq-overlay .dsh-aq-tool span,
+  .dsh-aq-overlay .dsh-aq-token,
+  .dsh-aq-zoom-readout { display: none; }
+  .dsh-aq-overlay .dsh-aq-badge { display: none; }
+  .dsh-aq-overlay .dsh-aq-auto { max-width: 44px; }
+  .dsh-aq-overlay .dsh-aq-status { bottom: 130px; }
+  .dsh-aq-page .dsh-aq-row { align-items: flex-start; }
+  .dsh-aq-page .dsh-aq-cta { align-items: flex-start; flex-direction: column; }
+  .dsh-aq-page .dsh-aq-heading h1 { font-size: 22px; }
+}
+@media (max-height: 550px) {
+  .dsh-aq-overlay .dsh-aq-heading p:last-child,
+  .dsh-aq-overlay .dsh-aq-caption,
+  .dsh-aq-overlay .dsh-aq-badge { display: none; }
+  /* Keep the tool column inside a short window: the token block sheds its
+     secondary line instead of pushing the reset button out of the card. */
+  .dsh-aq-overlay .dsh-aq-token small,
+  .dsh-aq-overlay .dsh-aq-token-bar { display: none; }
+  .dsh-aq-overlay .dsh-aq-tools { padding: 6px; gap: 4px; }
+  .dsh-aq-overlay .dsh-aq-tool { padding: 6px 4px; }
+  .dsh-aq-overlay .dsh-aq-heading { top: 18px; }
+  .dsh-aq-overlay .dsh-aq-heading h2 { font-size: 22px; }
+  .dsh-aq-overlay .dsh-aq-stage { inset: 58px 10px 0; }
+  .dsh-aq-overlay .dsh-aq-status { bottom: 108px; }
+  .dsh-aq-overlay .dsh-aq-hint { bottom: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dsh-aq-entry:hover { transform: none; }
+  .dsh-aq-entry-water { transition: none; }
+  .dsh-aq-entry-badge[data-pop='true'] { animation: none; }
+}
+
+
+
+
+
+
+
+
+
+
