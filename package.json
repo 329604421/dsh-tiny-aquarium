@@ -40,6 +40,7 @@
     "LICENSE",
     "presets.json",
     "skills",
+    "src",
     "docs/guides"
   ],
   "dsh": {
