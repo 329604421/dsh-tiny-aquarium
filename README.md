@@ -2,7 +2,7 @@
 
 DSH 桌面工作台里的透明三维鱼缸。左侧导航栏多一页「定制」，右下角多一个圆形鱼缸入口：点进去是铺满窗口的玻璃缸，可以拖动旋转、滚轮放大、单击玻璃把鱼惊一下，也可以舀一勺鱼食喂它们。鱼食不是白给的——DSH 的 Token 用量每满 5M 换 5 勺，装好就先送 5 勺。
 
-> 正式名：**小鱼缸**（英文名 **TinyFish**）。npm 包名 `dsh-tiny-fish`、插件 id `tinyfish`，仓库同名；界面上一律用「小鱼缸」，侧栏那一页叫「定制」。
+> 正式名：**小鱼缸**（英文名 **TinyFish**）。插件 id 是 `tinyfish`，仓库是 `dsh-tiny-fish`；npm 包名仍沿用 `dsh-tiny-aquarium`（npm 的相似名规则不允许 `dsh-tiny-fish`，它与生态里已有的 `dsh-tinyfish` 归一化后同名），安装时以包名为准，界面上一律显示「小鱼缸」，侧栏那一页叫「定制」。
 >
 > - 想定制缸体、灯具、造景、鱼种或投喂习惯 → [AI 定制工厂](https://github.com/329604421/dsh-tiny-fish/blob/main/docs/P5-AI定制工厂.md)
 > - 想调整投喂手感、受惊动作、接入新鱼或替换鱼食罐指针 → [投喂习惯与动作制作指南](https://github.com/329604421/dsh-tiny-fish/blob/main/docs/P4-投喂习惯与动作制作指南.md)
@@ -13,7 +13,7 @@ DSH 桌面工作台里的透明三维鱼缸。左侧导航栏多一页「定制�
 
 ```bash
 # ① 从 npm 装（推荐）：装完即用，不触发构建授权
-dsh plugin --profile desktop add dsh-tiny-fish
+dsh plugin --profile desktop add dsh-tiny-aquarium
 ```
 
 ```bash
@@ -137,7 +137,7 @@ npm run probe:tap     # 真实敲击、受惊/急逃/平复与单次事件响应
 npm run probe:autofeed # 鱼食库存闭环：兑换只入队、开缸不倒空、投喂扣库存、空罐有提示
 npm run p5:check      # 定制资产端到端：入缸、未知 id 回退、投喂习惯就地切换
 npm run verify:host   # 需 DSHAQ_URL 指向同版本官方 DSH Web GUI
-npm run pack:plugin   # 生成 releases/dsh-tiny-fish-0.2.0.tgz
+npm run pack:plugin   # 生成 releases/dsh-tiny-aquarium-0.3.0.tgz
 ```
 
 定制资产的日常操作走一条 CLI（体检、登记、下线、对账）：

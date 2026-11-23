@@ -15,7 +15,7 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const require = createRequire(import.meta.url);
 const code = await readFile(path.join(root, 'lib', 'client.js'), 'utf8');
 // 插件 id（NS）以 cordis.patch.yml 为准：包名只对 npm 负责，id 决定 slot / locale /
-// skill 的命名空间，两者的连字符写法允许不同（dsh-tiny-fish ↔ tinyfish）。
+// skill 的命名空间，两者的连字符写法允许不同（包名 dsh-tiny-aquarium ↔ id tinyfish）。
 const pkg = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8'));
 const patch = await readFile(path.join(root, 'cordis.patch.yml'), 'utf8');
 const NS = (patch.match(/^\s*-\s*id:\s*([\w-]+)/m) || [])[1];
