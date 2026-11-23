@@ -73,7 +73,7 @@
 };
 
 export const en = {
-  title: 'Tiny Tank', subtitle: 'A little time, a quieter current.',
+  title: 'TinyFish', subtitle: 'A little time, a quieter current.',
   tank: 'Clear glass aquarium', dimensions: '40 × 25 × 30 cm',
   close: 'Close aquarium',
   light: 'Lamp', lightOn: 'Lamp on', lightOff: 'Lamp off',

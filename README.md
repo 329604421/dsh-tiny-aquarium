@@ -1,11 +1,11 @@
-# 小鱼缸 Tiny Tank（DSH 三维鱼缸）
+# 小鱼缸 TinyFish（DSH 三维鱼缸）
 
 DSH 桌面工作台里的透明三维鱼缸。左侧导航栏多一页「定制」，右下角多一个圆形鱼缸入口：点进去是铺满窗口的玻璃缸，可以拖动旋转、滚轮放大、单击玻璃把鱼惊一下，也可以舀一勺鱼食喂它们。鱼食不是白给的——DSH 的 Token 用量每满 5M 换 5 勺，装好就先送 5 勺。
 
-> 正式名：**小鱼缸**（英文名 **Tiny Tank**）。包名与插件 id 都是 `dsh-tiny-aquarium` / `tiny-aquarium`，仓库同名；界面上一律用「小鱼缸」，侧栏那一页叫「定制」。
+> 正式名：**小鱼缸**（英文名 **TinyFish**）。npm 包名 `dsh-tiny-fish`、插件 id `tinyfish`，仓库同名；界面上一律用「小鱼缸」，侧栏那一页叫「定制」。
 >
-> - 想定制缸体、灯具、造景、鱼种或投喂习惯 → [AI 定制工厂](https://github.com/329604421/dsh-tiny-aquarium/blob/main/docs/P5-AI定制工厂.md)
-> - 想调整投喂手感、受惊动作、接入新鱼或替换鱼食罐指针 → [投喂习惯与动作制作指南](https://github.com/329604421/dsh-tiny-aquarium/blob/main/docs/P4-投喂习惯与动作制作指南.md)
+> - 想定制缸体、灯具、造景、鱼种或投喂习惯 → [AI 定制工厂](https://github.com/329604421/dsh-tiny-fish/blob/main/docs/P5-AI定制工厂.md)
+> - 想调整投喂手感、受惊动作、接入新鱼或替换鱼食罐指针 → [投喂习惯与动作制作指南](https://github.com/329604421/dsh-tiny-fish/blob/main/docs/P4-投喂习惯与动作制作指南.md)
 
 ## 安装
 
@@ -13,13 +13,13 @@ DSH 桌面工作台里的透明三维鱼缸。左侧导航栏多一页「定制�
 
 ```bash
 # ① 从 npm 装（推荐）：装完即用，不触发构建授权
-dsh plugin --profile desktop add dsh-tiny-aquarium
+dsh plugin --profile desktop add dsh-tiny-fish
 ```
 
 ```bash
 # ② 从源码装：要自己 build；只有这条路能用「AI 定制工厂」
-git clone https://github.com/329604421/dsh-tiny-aquarium.git
-cd dsh-tiny-aquarium && npm install && npm run build
+git clone https://github.com/329604421/dsh-tiny-fish.git
+cd dsh-tiny-fish && npm install && npm run build
 dsh plugin --profile desktop add "$PWD"
 ```
 
@@ -36,11 +36,11 @@ dsh plugin --profile desktop add "$PWD"
 
 | 投喂：一勺 4 粒，鱼群错峰抢食 | 全屏观赏：可拖动、可放大到 2.2× |
 | --- | --- |
-| ![投喂](https://raw.githubusercontent.com/329604421/dsh-tiny-aquarium/main/docs/screenshots/01-feeding.png) | ![全屏](https://raw.githubusercontent.com/329604421/dsh-tiny-aquarium/main/docs/screenshots/02-fullscreen.png) |
+| ![投喂](https://raw.githubusercontent.com/329604421/dsh-tiny-fish/main/docs/screenshots/01-feeding.png) | ![全屏](https://raw.githubusercontent.com/329604421/dsh-tiny-fish/main/docs/screenshots/02-fullscreen.png) |
 | **定制页：五个维度各一行，右边可换现成的或让 AI 做一个新的** | **Token 统计：已兑换 / 已投喂 / 待投喂 三个数能自己对上** |
-| ![定制页](https://raw.githubusercontent.com/329604421/dsh-tiny-aquarium/main/docs/screenshots/03-customize.png) | ![Token](https://raw.githubusercontent.com/329604421/dsh-tiny-aquarium/main/docs/screenshots/04-token.png) |
+| ![定制页](https://raw.githubusercontent.com/329604421/dsh-tiny-fish/main/docs/screenshots/03-customize.png) | ![Token](https://raw.githubusercontent.com/329604421/dsh-tiny-fish/main/docs/screenshots/04-token.png) |
 | **灯光跟随宿主深浅色自动判断** | **放大后画面沿圆形边界模糊收边** |
-| ![深色](https://raw.githubusercontent.com/329604421/dsh-tiny-aquarium/main/docs/screenshots/05-dark.png) | ![放大](https://raw.githubusercontent.com/329604421/dsh-tiny-aquarium/main/docs/screenshots/06-zoom.png) |
+| ![深色](https://raw.githubusercontent.com/329604421/dsh-tiny-fish/main/docs/screenshots/05-dark.png) | ![放大](https://raw.githubusercontent.com/329604421/dsh-tiny-fish/main/docs/screenshots/06-zoom.png) |
 
 
 ## 运行环境
@@ -137,7 +137,7 @@ npm run probe:tap     # 真实敲击、受惊/急逃/平复与单次事件响应
 npm run probe:autofeed # 鱼食库存闭环：兑换只入队、开缸不倒空、投喂扣库存、空罐有提示
 npm run p5:check      # 定制资产端到端：入缸、未知 id 回退、投喂习惯就地切换
 npm run verify:host   # 需 DSHAQ_URL 指向同版本官方 DSH Web GUI
-npm run pack:plugin   # 生成 releases/dsh-tiny-aquarium-0.2.0.tgz
+npm run pack:plugin   # 生成 releases/dsh-tiny-fish-0.2.0.tgz
 ```
 
 定制资产的日常操作走一条 CLI（体检、登记、下线、对账）：
@@ -174,7 +174,7 @@ node scripts/custom-asset.mjs archive --id fish.rainbow  # 下线：资产移入
 - 一次定制是多轮任务，模型可能中途失败；失败时清单没有变化，鱼缸照旧，按提示词里的回报格式重试即可。
 - 以鼠标操作为主，暂不包含音效、触屏与缩放。
 - 半透明遮罩依赖 `backdrop-filter`；若宿主关闭硬件加速，会退化为纯色半透明层（仍可读，但看不到背景模糊）。
-- 详细验收结果、基线数据与接口契约见 [docs/P1-验收记录.md](https://github.com/329604421/dsh-tiny-aquarium/blob/main/docs/P1-验收记录.md)。
+- 详细验收结果、基线数据与接口契约见 [docs/P1-验收记录.md](https://github.com/329604421/dsh-tiny-fish/blob/main/docs/P1-验收记录.md)。
 
 ## 鱼群：红绿灯与小丑鱼
 
@@ -185,15 +185,15 @@ node scripts/custom-asset.mjs archive --id fish.rainbow  # 下线：资产移入
 红绿灯使用完整侧面重建，正面与俯视图作四角度对照；正式资产 10,000 面、约 372 KB，内嵌 512² 颜色贴图与
 256² 法线贴图。`src/neon-tetra.js` 先按烘焙后的解剖坐标划分身体与五种鳍，再驱动头部稳定的身体行波、
 尾鳍滞后和胸鳍划水。原始模型、参考图、坐标/贴图处理脚本均在 `scripts/neon-tetra/`；详见
-[docs/P2-红绿灯重制.md](https://github.com/329604421/dsh-tiny-aquarium/blob/main/docs/P2-红绿灯重制.md)。
+[docs/P2-红绿灯重制.md](https://github.com/329604421/dsh-tiny-fish/blob/main/docs/P2-红绿灯重制.md)。
 
 小丑鱼最终采用用户认可的多视角照片重建版：20,000 面、901 KB，1024² 颜色贴图 +
 512² 法线贴图。它是一张连通网格，`src/clownfish.js` 按体轴/背腹/侧向位置烘焙身体与五种鳍的
 分区权重，胸鳍划水、腹鳍慢半拍、尾鳍滞后都绕各自鳍根驱动；身体仍做行进波 + 截面/法线旋转，
 `ClownfishPilot` 负责悬停 / 巡游 / 冲刺。程序化 15,336 面版本保留为备选，生成器输出到
-`scripts/clownfish/alternates/`，不覆盖正式资产。详见 [docs/P2-小丑鱼重制.md](https://github.com/329604421/dsh-tiny-aquarium/blob/main/docs/P2-小丑鱼重制.md)。
+`scripts/clownfish/alternates/`，不覆盖正式资产。详见 [docs/P2-小丑鱼重制.md](https://github.com/329604421/dsh-tiny-fish/blob/main/docs/P2-小丑鱼重制.md)。
 
-鱼的接入不是"把模型丢进来"，而是按 [docs/P2-入缸标准.md](https://github.com/329604421/dsh-tiny-aquarium/blob/main/docs/P2-入缸标准.md) 过一遍体检：
+鱼的接入不是"把模型丢进来"，而是按 [docs/P2-入缸标准.md](https://github.com/329604421/dsh-tiny-fish/blob/main/docs/P2-入缸标准.md) 过一遍体检：
 
 | 命令 | 作用 |
 | --- | --- |
@@ -215,12 +215,12 @@ node scripts/custom-asset.mjs archive --id fish.rainbow  # 下线：资产移入
 未入缸的历史候选资产大多没有可用贴图，因此早期曾用物体空间程序化鱼皮做验证。当前红绿灯与小丑鱼均使用
 独立照片重建资产和内嵌贴图，不再以通用低模换色代替新鱼种。
 
-资产来源与署名义务见 [assets/p2-src/CREDITS.md](https://github.com/329604421/dsh-tiny-aquarium/blob/main/assets/p2-src/CREDITS.md)。需要从参考图片制作新的鱼种时，按
-[鱼种 3D 资产构建指南](https://github.com/329604421/dsh-tiny-aquarium/blob/main/docs/guides/鱼种构建指南.md) 的流程执行，覆盖多视角重建、坐标校准、分区绑定、材质、动效和验收。
+资产来源与署名义务见 [assets/p2-src/CREDITS.md](https://github.com/329604421/dsh-tiny-fish/blob/main/assets/p2-src/CREDITS.md)。需要从参考图片制作新的鱼种时，按
+[鱼种 3D 资产构建指南](https://github.com/329604421/dsh-tiny-fish/blob/main/docs/guides/鱼种构建指南.md) 的流程执行，覆盖多视角重建、坐标校准、分区绑定、材质、动效和验收。
 
 追食、共享食物目标与敲击受惊已在 P4 接入，制作与参数说明见
-[投喂习惯与动作制作指南](https://github.com/329604421/dsh-tiny-aquarium/blob/main/docs/P4-投喂习惯与动作制作指南.md)；完整群体避让与路径求解仍属后续阶段。
-新鱼种不必再改代码：按 [鱼种构建指南](https://github.com/329604421/dsh-tiny-aquarium/blob/main/docs/guides/鱼种构建指南.md) 做出静态 GLB，走 `custom-asset.mjs` 体检登记即可入缸，
+[投喂习惯与动作制作指南](https://github.com/329604421/dsh-tiny-fish/blob/main/docs/P4-投喂习惯与动作制作指南.md)；完整群体避让与路径求解仍属后续阶段。
+新鱼种不必再改代码：按 [鱼种构建指南](https://github.com/329604421/dsh-tiny-fish/blob/main/docs/guides/鱼种构建指南.md) 做出静态 GLB，走 `custom-asset.mjs` 体检登记即可入缸，
 泳姿由引擎的顶点行波统一驱动（因此仍不接受自带 `Swim` 剪辑的资产）。
 
 ## 生态造景
@@ -235,14 +235,14 @@ node scripts/custom-asset.mjs archive --id fish.rainbow  # 下线：资产移入
 
 水草使用根部固定、叶尖增益、逐叶异相的顶点动画；省电模式降低摆幅并将更新量化到 15 Hz。
 `scene.getCollision()` 输出当前造景的米制占位数据，P3 先做轻量中心避让，P4 再接入完整空间求解。
-制作与扩展契约见 [鱼缸造景 3D 资产制作指南](https://github.com/329604421/dsh-tiny-aquarium/blob/main/docs/guides/鱼缸造景3D资产制作指南.md)。
+制作与扩展契约见 [鱼缸造景 3D 资产制作指南](https://github.com/329604421/dsh-tiny-fish/blob/main/docs/guides/鱼缸造景3D资产制作指南.md)。
 
 ## AI 定制工厂
 
 五个维度各有一个「做一个新的」入口，和「当前用哪个」的下拉并排在同一行。点了就跳到新会话，草稿只有三样东西：
 
 ```
-/aquarium-custom-core /aquarium-custom-tank 帮我给鱼缸换一个新缸体。
+/tinyfish-custom-core /tinyfish-custom-tank 帮我给鱼缸换一个新缸体。
 
 外形（方缸 / 圆角 / 异形）：
 材质与配色：
@@ -255,11 +255,11 @@ node scripts/custom-asset.mjs archive --id fish.rainbow  # 下线：资产移入
 
 | 维度 | 入口 id | 承载 skill | 交付物 |
 | --- | --- | --- | --- |
-| 缸体 | `tank` | `aquarium-custom-core` + `aquarium-custom-tank` | `assets-src/models/tank/<slug>.glb` + 清单条目 |
-| 灯具 | `lamp` | `aquarium-custom-core` + `aquarium-custom-lamp` | 同上（`lamp/`） |
-| 水草与造景 | `scape` | `aquarium-custom-core` + `aquarium-custom-scape` | 同上（`scene/`） |
-| 鱼群 | `fish` | `aquarium-custom-core` + `aquarium-custom-fish` | 同上（`fish/`） |
-| 投喂习惯 | `feeding` | `aquarium-custom-core` + `aquarium-custom-feeding` | 只改 `presets.json` 的 `params`，不出模型 |
+| 缸体 | `tank` | `tinyfish-custom-core` + `tinyfish-custom-tank` | `assets-src/models/tank/<slug>.glb` + 清单条目 |
+| 灯具 | `lamp` | `tinyfish-custom-core` + `tinyfish-custom-lamp` | 同上（`lamp/`） |
+| 水草与造景 | `scape` | `tinyfish-custom-core` + `tinyfish-custom-scape` | 同上（`scene/`） |
+| 鱼群 | `fish` | `tinyfish-custom-core` + `tinyfish-custom-fish` | 同上（`fish/`） |
+| 投喂习惯 | `feeding` | `tinyfish-custom-core` + `tinyfish-custom-feeding` | 只改 `presets.json` 的 `params`，不出模型 |
 
 六份 skill 随包注册（`ctx.skills.register`，正文来自 `skills/*/SKILL.md`），`resourceBase` 指向真实目录，正文里的 `{{ROOT}}` 在注册时替换成本机绝对路径——模型拿到的是能直接 `ls` 的路径，不用猜工作区在哪。
 
@@ -267,6 +267,6 @@ node scripts/custom-asset.mjs archive --id fish.rainbow  # 下线：资产移入
 
 回退三条路：定制页切回内置即生效（不重启）；`custom-asset.mjs archive` 下线资产并把配置文件里的残留 id 交给运行时回退；不满意就直接删清单条目重来。
 
-完整实施说明与 AC-36～39 的验收方法见 [docs/P5-AI定制工厂.md](https://github.com/329604421/dsh-tiny-aquarium/blob/main/docs/P5-AI定制工厂.md)。
+完整实施说明与 AC-36～39 的验收方法见 [docs/P5-AI定制工厂.md](https://github.com/329604421/dsh-tiny-fish/blob/main/docs/P5-AI定制工厂.md)。
 
 

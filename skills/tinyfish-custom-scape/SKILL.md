@@ -1,6 +1,6 @@
 # 定制水草与造景
 
-> 前置：先读完 `aquarium-custom-core`。
+> 前置：先读完 `tinyfish-custom-core`。
 > 细则底稿：`<ROOT>/docs/guides/鱼缸造景3D资产制作指南.md`
 
 ---

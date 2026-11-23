@@ -60,7 +60,7 @@
 > ⚠️ **开工前先自检这一条**：如果 `<ROOT>/scripts/custom-asset.mjs` 不存在，说明当前这份是
 > **npm 安装的运行时副本**（只随包发运行时代码，不含定制工具链）。此时**不要**尝试构建、
 > 也不要就地手改 `node_modules` 里的文件——直接告诉用户：定制需要在源码目录里做，
-> `git clone https://github.com/329604421/dsh-tiny-aquarium` 之后用
+> `git clone https://github.com/329604421/dsh-tiny-fish` 之后用
 > `dsh plugin --profile desktop add <本地源码目录>` 装一份源码版，再在新会话里重新发起定制。
 > 除这一条以外，其余契约照旧。
 

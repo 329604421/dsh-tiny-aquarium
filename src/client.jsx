@@ -10,7 +10,7 @@ import { buildPrompt, handoffBlockers, BLOCKER_KEYS, DIMENSIONS } from './custom
 
 export const inject = ['slots', 'theme', 'configForms', 'locale', 'sessions', 'uiWorkspace', 'workspaces'];
 
-const NS = 'tiny-aquarium';
+const NS = 'tinyfish';
 /** 清单是 P5 起唯一的事实来源：内置与定制资产走同一份数据。 */
 const catalog = createCatalog(manifest.presets);
 
@@ -915,7 +915,7 @@ function SettingsPage({ t: hostT }) {
   }, SidebarEntry)));
   ctx.effect(() => ctx.slots.inject('main', () => ctx.slots.register({ name: 'main', key: NS, locale: NS }, SettingsPage)));
   ctx.effect(() => ctx.slots.inject('shell.overlay', () => ctx.slots.register({
-    name: 'shell.overlay', id: 'tiny-aquarium-view', order: -100, locale: NS,
+    name: 'shell.overlay', id: 'tinyfish-view', order: -100, locale: NS,
   }, PlayView)));
 }
 

@@ -1,7 +1,7 @@
 {
-  "name": "dsh-tiny-aquarium",
-  "version": "0.2.0",
-  "description": "小鱼缸（Tiny Tank）：DSH 桌面工作台里的透明三维鱼缸——造景、鱼群、敲击投喂与 Token 兑换鱼食",
+  "name": "dsh-tiny-fish",
+  "version": "0.3.0",
+  "description": "小鱼缸（TinyFish）：DSH 桌面工作台里的透明三维鱼缸——造景、鱼群、敲击投喂与 Token 兑换鱼食",
   "keywords": [
     "dsh-plugin",
     "dsh",
@@ -17,11 +17,11 @@
   "author": "329604421",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/329604421/dsh-tiny-aquarium.git"
+    "url": "git+https://github.com/329604421/dsh-tiny-fish.git"
   },
-  "homepage": "https://github.com/329604421/dsh-tiny-aquarium#readme",
+  "homepage": "https://github.com/329604421/dsh-tiny-fish#readme",
   "bugs": {
-    "url": "https://github.com/329604421/dsh-tiny-aquarium/issues"
+    "url": "https://github.com/329604421/dsh-tiny-fish/issues"
   },
   "main": "./lib/host.js",
   "exports": {

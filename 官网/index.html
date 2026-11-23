@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>小鱼缸 TinyFish · DSH 工作台里的透明三维鱼缸</title>
+<meta name="description" content="小鱼缸（TinyFish）是 DSH 桌面工作台里的透明三维鱼缸插件：红绿灯与小丑鱼、三套生态造景，可拖动旋转、滚轮放大、单击玻璃惊鱼；鱼食用 Token 用量兑换。MIT 开源，npm 安装一条命令。">
+<meta name="theme-color" content="#060F0D">
+<meta property="og:title" content="小鱼缸 TinyFish · DSH 工作台里的透明三维鱼缸">
+<meta property="og:description" content="右下角多一个圆形鱼缸入口，点开是铺满窗口的玻璃缸。鱼食不吃白食：Token 每满 5M 换 5 勺。">
+<meta property="og:type" content="product">
+<meta property="og:site_name" content="小鱼缸 TinyFish">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:url" content="https://tinyfish.memorymap.cn/">
+<meta property="og:image" content="https://tinyfish.memorymap.cn/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="小鱼缸 TinyFish —— DSH 工作台里的透明三维鱼缸">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://tinyfish.memorymap.cn/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230A1714'/%3E%3Crect x='5' y='8' width='22' height='17' rx='2' fill='none' stroke='%233FD9B0' stroke-width='1.5'/%3E%3Cpath d='M5 13h22' stroke='%233FD9B0' stroke-width='1' opacity='.4'/%3E%3Cpath d='M15 20c-2.2 0-3.8-1.4-3.8-3.2S12.8 13.6 15 13.6c1.6 0 3 1 3.6 2.4l2.6-2v5.6l-2.6-2c-.6 1.4-2 2.4-3.6 2.4z' fill='%233FD9B0'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#060F0D;
+  --ink:#E9F3EE;
+  --muted:#9BB5AA;
+  --dim:#7E978C;
+  --teal:#3FD9B0;
+  --teal-lt:#8FEBD4;
+  --blue:#6FA8FF;
+  --amber:#E8B269;
+  --line:rgba(255,255,255,.105);
+  --line-soft:rgba(255,255,255,.07);
+  --glass:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.026));
+  --r:22px;
+  --sans:-apple-system,BlinkMacSystemFont,"Outfit","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+  --mono:"SFMono-Regular",ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:108px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.72;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+img{display:block;max-width:100%;height:auto}
+h1,h2,h3,h4,p,figure,pre,dl,dd{margin:0}
+h1,h2,h3,h4{font-weight:800;letter-spacing:-.02em}
+ul,ol{margin:0;padding:0;list-style:none}
+[hidden]{display:none!important}
+code{font-family:var(--mono)}
+::selection{background:rgba(63,217,176,.28);color:#fff}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:6px}
+.wrap{width:min(1180px,calc(100% - 44px));margin:auto}
+.mono{font-family:var(--mono)}
+.skip{position:fixed;top:-100px;left:16px;z-index:100;background:var(--teal);color:#04130F;padding:10px 18px;border-radius:10px;font-weight:700}
+.skip:focus{top:12px}
+
+/* ---------- 水下背景 ---------- */
+.aurora{position:fixed;inset:0;z-index:-3;pointer-events:none;background:
+  radial-gradient(56% 40% at 50% -6%,rgba(63,217,176,.24),transparent 68%),
+  radial-gradient(38% 30% at 90% 10%,rgba(90,160,255,.14),transparent 70%),
+  radial-gradient(44% 32% at 4% 34%,rgba(63,217,176,.08),transparent 72%),
+  linear-gradient(180deg,#071512 0%,#060F0D 42%,#050C0A 100%)}
+.aurora::after{content:"";position:absolute;inset:0;opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E")}
+.beam{position:fixed;top:-14vh;left:52%;width:64vw;height:82vh;transform:translateX(-50%) rotate(7deg);
+  background:linear-gradient(180deg,rgba(143,235,212,.11),rgba(143,235,212,.02) 55%,transparent 76%);
+  filter:blur(34px);z-index:-2;pointer-events:none}
+.bubbles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.bubbles i{position:absolute;bottom:-60px;border-radius:50%;opacity:0;
+  background:radial-gradient(circle at 32% 30%,rgba(255,255,255,.8),rgba(143,235,212,.12) 58%,transparent 72%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.22);
+  animation:rise linear infinite}
+@keyframes rise{
+  0%{transform:translate3d(0,0,0) scale(.75);opacity:0}
+  14%{opacity:.5}
+  66%{opacity:.34}
+  100%{transform:translate3d(18px,-96vh,0) scale(1.12);opacity:0}
+}
+
+/* ---------- nav ---------- */
+.nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:60;
+  width:min(1180px,calc(100% - 40px));height:62px;padding:0 12px 0 18px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-radius:999px;border:1px solid var(--line);
+  background:rgba(9,21,18,.72);backdrop-filter:blur(20px) saturate(1.25);
+  box-shadow:0 24px 50px -34px #000}
+.brand{display:flex;align-items:center;gap:11px}
+.brand svg{width:34px;height:34px;color:var(--teal);flex:none}
+.brand b{font-size:15px;font-weight:700;letter-spacing:0;display:block;line-height:1.35}
+.brand small{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--dim);line-height:1.4}
+.nav-links{display:flex;align-items:center;gap:6px;font-size:13.5px}
+.nav-links a{padding:8px 13px;border-radius:999px;color:#B9CFC6;transition:background .2s,color .2s}
+.nav-links a:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav-links a[aria-current]{color:#fff;background:rgba(63,217,176,.12)}
+.nav-cta{display:flex;align-items:center;gap:8px;height:38px;padding:0 16px;border-radius:999px;
+  background:rgba(255,255,255,.06);border:1px solid var(--line);font-size:13px;transition:background .2s,border-color .2s}
+.nav-cta:hover{background:rgba(63,217,176,.14);border-color:rgba(63,217,176,.38)}
+.progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:70;background:linear-gradient(90deg,var(--teal),#7FB6FF);box-shadow:0 0 12px rgba(63,217,176,.8)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;padding:132px 0 0;text-align:center;overflow:hidden}
+.hero-top{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;margin-bottom:26px}
+.pill{display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 13px;border-radius:999px;
+  font-size:11.5px;letter-spacing:.02em;color:#BBD9CF;background:rgba(255,255,255,.045);border:1px solid var(--line)}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px rgba(63,217,176,.14)}
+.pill.live{color:#9DEBCF;background:rgba(63,217,176,.09);border-color:rgba(63,217,176,.26)}
+h1{font-size:clamp(42px,6vw,80px);line-height:1.1;letter-spacing:-.035em;font-weight:800;margin:0 auto;max-width:15em}
+.grad{background:linear-gradient(96deg,#C9FFF0 8%,#3FD9B0 46%,#6FA8FF 96%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{max-width:600px;margin:26px auto 0;font-size:16px;line-height:1.92;color:var(--muted)}
+.lede b{color:#D6E9E1;font-weight:600}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:32px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:48px;padding:0 24px;border-radius:999px;border:0;
+  font-size:14px;font-weight:700;letter-spacing:0;transition:transform .18s,box-shadow .18s,background .2s,border-color .2s}
+.btn-primary{background:linear-gradient(180deg,#6EEBC4,#31C69B);color:#04150F;box-shadow:0 18px 34px -18px rgba(63,217,176,.75),inset 0 1px 0 rgba(255,255,255,.4)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 22px 44px -18px rgba(63,217,176,.85),inset 0 1px 0 rgba(255,255,255,.5)}
+.btn-ghost{background:rgba(255,255,255,.045);border:1px solid var(--line);color:#DDEDE7}
+.btn-ghost:hover{background:rgba(255,255,255,.08);border-color:rgba(63,217,176,.34)}
+.btn .ink{font-size:15px;line-height:1}
+.hero-note{margin-top:14px;font-size:11.5px;color:var(--dim);font-family:var(--mono);letter-spacing:.02em}
+
+.hero-shot{position:relative;max-width:1080px;margin:56px auto 0;z-index:1}
+.hero-shot::before{content:"";position:absolute;inset:-6% -4% -14%;z-index:-1;
+  background:radial-gradient(58% 62% at 50% 42%,rgba(63,217,176,.22),rgba(111,168,255,.08) 52%,transparent 74%);
+  filter:blur(26px)}
+.hero-shot .frame{border-radius:26px;padding:8px;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.03));
+  border:1px solid rgba(255,255,255,.11);box-shadow:0 70px 130px -70px #000,inset 0 1px 0 rgba(255,255,255,.18)}
+.hero-shot img{width:100%;border-radius:19px;border:1px solid rgba(0,0,0,.5)}
+.hero-shot .cap{display:flex;justify-content:space-between;gap:16px;margin-top:14px;padding:0 6px;
+  font-size:11px;color:var(--dim);font-family:var(--mono);letter-spacing:.02em}
+.hero-foot{position:relative;max-width:1080px;margin:52px auto 0;padding:30px 0 8px;border-top:1px solid var(--line-soft)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;text-align:left}
+.stat b{display:block;font-size:clamp(30px,3.4vw,44px);line-height:1.1;font-weight:800;letter-spacing:-.035em;
+  background:linear-gradient(180deg,#F2FFFA,#79D9BE);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{display:block;margin-top:7px;font-size:11.5px;line-height:1.65;color:var(--dim)}
+.stat em{font-style:normal;color:#B4CEC4}
+
+/* ---------- 通用 section ---------- */
+section{position:relative;padding:116px 0}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;margin-bottom:44px}
+.sec-head h2{font-size:clamp(30px,3.8vw,46px);line-height:1.18;letter-spacing:-.032em;max-width:15em}
+.sec-head > div > .chip{margin-bottom:16px}
+.sec-head p{max-width:352px;color:var(--muted);font-size:13.5px;line-height:1.92;padding-bottom:5px}
+.chip{display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 12px;border-radius:999px;
+  font-size:11px;letter-spacing:.04em;color:#A8DCCB;background:rgba(63,217,176,.075);border:1px solid rgba(63,217,176,.2);font-family:var(--mono)}
+/* ---------- 四个面（卡） ---------- */
+.tour-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.tcard{position:relative;background:var(--glass);border:1px solid var(--line);border-radius:24px;padding:12px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 30px 60px -50px #000;
+  transition:transform .26s cubic-bezier(.2,.7,.2,1),border-color .26s,box-shadow .26s}
+.tcard:hover{transform:translateY(-4px);border-color:rgba(63,217,176,.34);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 48px 90px -56px #000,0 0 0 1px rgba(63,217,176,.08)}
+.install>*,.custom>*,.ledger>*,.tour-grid>*,.figures>*,.moves>*,.tcard>*,.term,.cmd{min-width:0}
+pre{max-width:100%}
+.tcard .shot{border-radius:15px;overflow:hidden;border:1px solid var(--line-soft);background:#08120F}
+.tcard .shot img{width:100%}
+.tcard .body{padding:20px 12px 10px}
+.tcard .kicker{font-size:10.5px;font-family:var(--mono);letter-spacing:.12em;color:var(--teal);opacity:.9}
+.tcard h3{font-size:20px;margin:9px 0 8px;line-height:1.4;letter-spacing:-.015em}
+.tcard p{font-size:13px;line-height:1.86;color:var(--muted)}
+.tcard .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:15px}
+.tcard .meta span{font-size:10.5px;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid var(--line-soft);color:#9CB8AE}
+
+/* ---------- 四个动作 ---------- */
+.moves{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}
+.move{padding:30px 26px 6px 0;position:relative}
+.move+.move{padding-left:26px;border-left:1px solid var(--line-soft)}
+.move::before{content:"";position:absolute;top:-1px;left:0;width:46px;height:2px;
+  background:linear-gradient(90deg,var(--teal),rgba(63,217,176,0))}
+.move+.move::before{left:26px}
+.move .n{font-family:var(--mono);font-size:11px;color:var(--teal);letter-spacing:.14em}
+.move h3{font-size:18px;margin:14px 0 9px;letter-spacing:-.015em}
+.move p{font-size:12.5px;line-height:1.86;color:var(--muted)}
+.moves-foot{margin-top:26px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;
+  font-size:10.5px;color:var(--dim);font-family:var(--mono);letter-spacing:.03em}
+
+/* ---------- 浅一档的区块 ---------- */
+.tint{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.012));
+  border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),inset 0 -1px 0 rgba(255,255,255,.02)}
+
+/* ---------- Token 账本 ---------- */
+.ledger{display:grid;grid-template-columns:1.06fr .94fr;gap:20px;align-items:stretch}
+.figures{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fig{background:var(--glass);border:1px solid var(--line);border-radius:20px;padding:22px 20px;transition:border-color .2s}
+.fig:hover{border-color:rgba(63,217,176,.26)}
+.fig b{display:block;font-size:clamp(30px,3.2vw,38px);line-height:1.05;font-weight:800;letter-spacing:-.035em;
+  background:linear-gradient(180deg,#F4FFFB,#77D8BD);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fig span{display:block;margin-top:9px;font-size:12px;color:#C4DAD2;font-weight:600}
+.fig small{display:block;margin-top:4px;font-size:11px;line-height:1.7;color:var(--dim)}
+.ledger-card{background:var(--glass);border:1px solid var(--line);border-radius:24px;padding:30px;
+  display:flex;flex-direction:column;justify-content:center}
+.ledger-card .chip{margin-bottom:16px;align-self:flex-start}
+.formula{font-family:var(--mono);font-size:clamp(11.5px,1.3vw,14px);line-height:2.1;color:#CFEDE3;
+  background:rgba(3,12,10,.62);border:1px solid var(--line-soft);border-radius:12px;padding:15px 16px;letter-spacing:.01em}
+.formula b{color:var(--teal-lt);font-weight:600}
+.ledger-card p{font-size:12.5px;line-height:1.9;color:var(--muted);margin-top:16px}
+.ledger-card p b{color:#D6E9E1;font-weight:600}
+
+/* ---------- 定制 ---------- */
+.custom{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.dim{border-bottom:1px solid var(--line-soft)}
+.dim:first-child{border-top:1px solid var(--line-soft)}
+.dim summary{display:flex;align-items:center;gap:14px;padding:19px 2px;cursor:pointer;list-style:none}
+.dim summary::-webkit-details-marker{display:none}
+.dim .idx{font-family:var(--mono);font-size:10.5px;color:var(--dim);min-width:20px}
+.dim h3{font-size:16.5px;flex:1;letter-spacing:-.01em;line-height:1.5}
+.dim h3 small{display:block;font-size:11.5px;font-weight:400;color:var(--muted);letter-spacing:0;margin-top:3px;line-height:1.7}
+.dim .plus{width:26px;height:26px;flex:none;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;
+  color:var(--teal);font-size:15px;line-height:1;transition:transform .2s,background .2s,border-color .2s}
+.dim[open] .plus{transform:rotate(45deg);background:rgba(63,217,176,.14);border-color:rgba(63,217,176,.4)}
+.dim summary:hover h3{color:var(--teal-lt)}
+.dim-body{padding:0 2px 20px 34px}
+.dim-body p{font-size:12.5px;line-height:1.9;color:var(--muted)}
+.dim-body p b{color:#D6E9E1;font-weight:600}
+.dim-body .skill{display:inline-block;font-family:var(--mono);font-size:10.5px;color:#BFEFE1;
+  background:rgba(63,217,176,.08);border:1px solid rgba(63,217,176,.2);border-radius:6px;padding:3px 7px;margin:11px 0 9px}
+.dim-body .deliver{font-size:10.5px;font-family:var(--mono);color:var(--dim);border-top:1px dashed var(--line-soft);padding-top:9px}
+.term{background:#04100D;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 50px 90px -70px #000}
+.term-bar{display:flex;align-items:center;gap:6px;padding:12px 14px;border-bottom:1px solid var(--line-soft);background:rgba(255,255,255,.02)}
+.term-bar i{width:9px;height:9px;border-radius:50%;background:#26382F}
+.term-bar i:nth-child(1){background:#3C2B28}
+.term-bar i:nth-child(2){background:#3B3526}
+.term-bar span{margin-left:8px;font-family:var(--mono);font-size:10.5px;color:var(--dim);letter-spacing:.04em}
+.term pre{padding:20px;font-size:12px;line-height:1.95;color:#C8E7DC;overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+.term .tk{color:var(--teal-lt);font-weight:600}
+.term .cm{color:#5D746B}
+.term-foot{padding:14px 20px 18px;border-top:1px solid var(--line-soft);font-size:11.5px;line-height:1.8;color:var(--dim)}
+.term-foot b{color:#CFE6DC;font-weight:600}
+
+/* ---------- 安装 ---------- */
+.install{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.cmd-block+.cmd-block{margin-top:16px}
+.cmd-label{display:flex;align-items:baseline;gap:9px;margin-bottom:9px;flex-wrap:wrap}
+.cmd-label b{font-size:13.5px}
+.cmd-label span{font-size:10.5px;color:var(--dim);font-family:var(--mono)}
+.cmd{position:relative;background:#04100D;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.cmd pre{padding:18px 66px 18px 18px;font-size:12.5px;line-height:1.95;color:#D6F0E7;overflow-x:auto;
+  white-space:pre-wrap;word-break:break-word}
+.cmd .cm{color:#5D746B}
+.copy{position:absolute;top:10px;right:10px;height:28px;padding:0 11px;border-radius:8px;
+  border:1px solid var(--line);background:rgba(255,255,255,.05);color:#A9C6BB;font-size:10.5px;font-family:var(--mono);
+  transition:background .2s,color .2s,border-color .2s}
+.copy:hover{background:rgba(63,217,176,.14);color:#DFFBF1;border-color:rgba(63,217,176,.4)}
+.copy.ok{color:#9DEBCF;border-color:rgba(63,217,176,.45);background:rgba(63,217,176,.1)}
+.note{margin-top:14px;font-size:11.5px;line-height:1.9;color:#93AFA5;border-left:2px solid rgba(63,217,176,.4);padding-left:12px}
+.note b{color:#D6E9E1;font-weight:600}
+.perms{border-top:1px solid var(--line-soft)}
+.perm{display:grid;grid-template-columns:74px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--line-soft)}
+.perm dt{font-size:10.5px;color:var(--teal);font-family:var(--mono);letter-spacing:.06em;padding-top:3px}
+.perm dd{font-size:12.5px;line-height:1.85;color:var(--muted)}
+.perm dd b{color:#D6E9E1;font-weight:600}
+.bounds{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.bounds span{font-size:11px;color:#9CB8AE;padding:6px 11px;border-radius:999px;border:1px solid var(--line-soft);background:rgba(255,255,255,.03)}
+
+/* ---------- 结尾 ---------- */
+.close{position:relative;padding:130px 0 100px;text-align:center;overflow:hidden}
+.close::before{content:"";position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);
+  width:900px;height:520px;background:radial-gradient(closest-side,rgba(63,217,176,.16),transparent 72%);
+  filter:blur(20px);pointer-events:none}
+.close .tank-mark{position:absolute;left:50%;bottom:-158px;transform:translateX(-50%);
+  width:min(900px,108%);opacity:.05;pointer-events:none}
+.close-in{position:relative}
+.close h2{font-size:clamp(34px,4.8vw,62px);line-height:1.14;letter-spacing:-.038em;max-width:14em;margin:0 auto}
+.close p{max-width:520px;margin:22px auto 0;color:var(--muted);font-size:14.5px;line-height:1.9}
+.close-meta{margin-top:30px;font-size:11.5px;color:var(--dim);font-family:var(--mono);line-height:2}
+.close-meta a{color:#A9D9CB;border-bottom:1px solid rgba(63,217,176,.3);padding-bottom:1px}
+.close-meta a:hover{color:var(--teal-lt)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line-soft);padding:26px 0 42px;position:relative}
+.foot{display:flex;justify-content:space-between;gap:22px;flex-wrap:wrap;font-size:11.5px;color:var(--dim);line-height:1.95}
+.foot-credit{max-width:560px}
+.foot a:hover{color:var(--teal)}
+.foot-links{display:flex;gap:16px;flex-wrap:wrap}
+
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .65s cubic-bezier(.2,.7,.2,1),transform .65s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none;transition:none}
+  .bubbles,.beam{display:none}
+  .tcard:hover{transform:none}
+}
+
+@media (max-width:1060px){
+  .ledger,.custom,.install{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr;gap:20px}
+  .sec-head{flex-direction:column;align-items:flex-start;gap:16px}
+  .sec-head p{max-width:560px}
+  .moves{grid-template-columns:1fr 1fr}
+  .move:nth-child(3){border-left:0;padding-left:0}
+  .move:nth-child(3)::before{left:0}
+  .move:nth-child(n+3){border-top:1px solid var(--line-soft);padding-top:26px;margin-top:26px}
+  .move:nth-child(4)::before{top:26px}
+  .term-foot{border-top:1px solid var(--line-soft)}
+}
+@media (max-width:860px){
+  section{padding:84px 0}
+  .hero{padding-top:118px}
+  .nav-links .anchor{display:none}
+  .tour-grid{grid-template-columns:1fr}
+  .hero-shot{margin-top:40px}
+  .hero-foot{margin-top:40px}
+  .hero-shot .cap{font-size:10px}
+}
+@media (max-width:560px){
+  .wrap{width:calc(100% - 36px)}
+  h1{font-size:36px;letter-spacing:-.028em}
+  .lede{font-size:14.5px}
+  .hero-actions .btn{flex:1 1 100%}
+  .hero-top{gap:7px}
+  .pill{font-size:10px;height:27px;padding:0 10px}
+  .figures{grid-template-columns:1fr}
+  .fig b{font-size:32px}
+  .moves{grid-template-columns:1fr}
+  .move{padding:24px 0 4px}
+  .move+.move{border-left:0;padding-left:0;border-top:1px solid var(--line-soft);margin-top:20px}
+  .move+.move::before{left:0;top:-1px}
+  .dim h3{font-size:15.5px}
+  .dim-body{padding-left:0}
+  .perm{grid-template-columns:1fr;gap:4px}
+  .cmd pre{padding:44px 16px 16px;font-size:12px}
+  .copy{top:8px;right:8px}
+  .close{padding:88px 0 76px}
+  .foot{font-size:11px}
+}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "小鱼缸 TinyFish",
+  "alternateName": "dsh-tiny-fish",
+  "applicationCategory": "DesktopEnhancementApplication",
+  "operatingSystem": "Windows, macOS, Linux",
+  "description": "DSH 桌面工作台里的透明三维鱼缸插件：七尾鱼、三套生态造景，可拖动旋转、滚轮放大、单击玻璃惊鱼；鱼食用 Token 用量兑换。",
+  "url": "https://tinyfish.memorymap.cn/",
+  "downloadUrl": "https://www.npmjs.com/package/dsh-tiny-fish",
+  "codeRepository": "https://github.com/329604421/dsh-tiny-fish",
+  "softwareVersion": "0.2.0",
+  "license": "https://opensource.org/licenses/MIT",
+  "image": "https://tinyfish.memorymap.cn/assets/og.jpg",
+  "author": {
+    "@type": "Person",
+    "name": "杜春生",
+    "url": "https://memorymap.cn"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  }
+}
+</script>
+</head>
+<body>
+<div class="aurora" aria-hidden="true"></div>
+<div class="beam" aria-hidden="true"></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<a class="skip" href="#main">跳到主要内容</a>
+
+<nav class="nav" aria-label="主导航">
+  <a class="brand" href="#top" aria-label="小鱼缸 TinyFish 首页">
+    <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+      <rect x="4" y="13" width="32" height="20" rx="3" stroke="currentColor" stroke-width="1.6"/>
+      <path d="M4 19h32" stroke="currentColor" stroke-width="1" opacity=".35"/>
+      <path d="M5 7h5M30 7h5M7.5 7v6M32.5 7v6" stroke="currentColor" stroke-width="1.1" opacity=".5"/>
+      <path d="M18.4 27.6c-2.5 0-4.3-1.6-4.3-3.8s1.8-3.8 4.3-3.8c1.9 0 3.4 1.2 4.1 2.8l2.9-2.3v6.6l-2.9-2.3c-.7 1.6-2.2 2.8-4.1 2.8z" fill="currentColor"/>
+      <circle cx="16.3" cy="22.9" r=".85" fill="#060F0D"/>
+    </svg>
+    <span><b>小鱼缸</b><small>TINY TANK</small></span>
+  </a>
+  <div class="nav-links">
+    <a class="anchor" href="#tour">逛逛</a>
+    <a class="anchor" href="#token">Token</a>
+    <a class="anchor" href="#custom">定制</a>
+    <a class="anchor" href="#install">安装</a>
+    <a class="nav-cta" href="https://github.com/329604421/dsh-tiny-fish" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+  </div>
+</nav>
+
+<main id="main">
+  <header class="hero" id="top">
+    <div class="bubbles" aria-hidden="true">
+      <i style="left:8%;width:9px;height:9px;animation-duration:19s;animation-delay:-2s"></i>
+      <i style="left:17%;width:5px;height:5px;animation-duration:25s;animation-delay:-14s"></i>
+      <i style="left:29%;width:12px;height:12px;animation-duration:22s;animation-delay:-8s"></i>
+      <i style="left:41%;width:6px;height:6px;animation-duration:28s;animation-delay:-20s"></i>
+      <i style="left:58%;width:8px;height:8px;animation-duration:17s;animation-delay:-5s"></i>
+      <i style="left:69%;width:4px;height:4px;animation-duration:24s;animation-delay:-16s"></i>
+      <i style="left:81%;width:11px;height:11px;animation-duration:21s;animation-delay:-11s"></i>
+      <i style="left:92%;width:6px;height:6px;animation-duration:26s;animation-delay:-19s"></i>
+    </div>
+
+    <div class="wrap" style="position:relative;z-index:1">
+      <div class="hero-top">
+        <span class="pill live"><span class="dot"></span>v0.2.0 · npm 可安装</span>
+        <span class="pill">DSH 桌面插件 · 娱乐</span>
+        <span class="pill">MIT 开源</span>
+      </div>
+
+      <h1>把一只鱼缸，<br>放进<span class="grad">写代码的间隙</span>。</h1>
+
+      <p class="lede">
+        DSH 桌面工作台里的<strong>透明三维鱼缸</strong>。左侧导航多一页「定制」，右下角多一个圆形入口——点进去是铺满窗口的玻璃缸：拖动旋转、滚轮放大到 2.2×、单击玻璃惊鱼，再舀一勺鱼食喂它们。鱼食不吃白食，<strong>Token 每满 5M 换 5 勺</strong>，装好先送 5 勺。
+      </p>
+
+      <div class="hero-actions">
+        <button class="btn btn-primary" data-copy="dsh plugin --profile desktop add dsh-tiny-fish" data-label="复制安装命令">
+          <span data-copy-label>复制安装命令</span><span class="ink" aria-hidden="true">⧉</span>
+        </button>
+        <a class="btn btn-ghost" href="#tour">看看缸里有什么 <span aria-hidden="true">↓</span></a>
+      </div>
+      <p class="hero-note">$ dsh plugin --profile desktop add dsh-tiny-fish</p>
+
+      <figure class="hero-shot">
+        <div class="frame">
+          <img src="assets/tour-fullscreen.webp" width="1400" height="972" fetchpriority="high" alt="小鱼缸全屏视图：清透长方缸、弧形夹灯、水草与红绿灯及小丑鱼，左侧竖排操作栏">
+        </div>
+        <figcaption class="cap"><span>全屏观赏 / 1.0×</span><span>shell.overlay · WebGL2 · 不联网</span></figcaption>
+      </figure>
+
+      <div class="hero-foot">
+        <div class="stats">
+          <div class="stat"><b>07</b><span><em>尾鱼</em><br>红绿灯 ×5 · 小丑鱼 ×2</span></div>
+          <div class="stat"><b>03</b><span><em>套造景</em><br>苔石 · 丛林 · 沉木</span></div>
+          <div class="stat"><b>5M</b><span><em>Token → 5 勺</em><br>余量保留 · 上限 100 勺</span></div>
+          <div class="stat"><b>00</b><span><em>联网请求</em><br>资源全部构建期内联</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <section id="tour">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="chip">A QUICK TOUR</span>
+          <h2>一只缸，<br>四个面。</h2>
+        </div>
+        <p>观赏、投喂、定制、对账，各自有各自的入口。下面是真实宿主里截下来的界面，不是设计稿，也没有后期合成。</p>
+      </div>
+
+      <div class="tour-grid">
+        <article class="tcard">
+          <div class="shot">
+            <img src="assets/tour-fullscreen.webp" width="1400" height="972" loading="lazy" alt="全屏鱼缸视图，左侧竖排操作栏显示灯光、鱼食罐与 Token 用量">
+          </div>
+          <div class="body">
+            <div class="kicker">FULLSCREEN</div>
+            <h3>铺满窗口的一只玻璃缸</h3>
+            <p>点右下角的圆形入口进入，画布铺满整个窗口，底部只留一行操作提示。拖动让缸体绕竖直轴旋转，滚轮从 1.0× 放大到 2.2×，放大后画面沿圆形边界模糊收边。</p>
+            <div class="meta"><span>拖动旋转</span><span>滚轮 2.2×</span><span>Esc 关闭</span><span>跟随宿主深浅色</span></div>
+          </div>
+        </article>
+
+        <article class="tcard">
+          <div class="shot">
+            <img src="assets/tour-feeding.webp" width="1400" height="972" loading="lazy" alt="投喂瞬间：鱼食从水面向下散开，鱼群聚拢抢食">
+          </div>
+          <div class="body">
+            <div class="kicker">FEEDING</div>
+            <h3>一勺四粒，鱼群错峰抢食</h3>
+            <p>点一次缸口只舀一勺，落进水里是 4 粒一小撮。鱼按距离在 0.3～1 秒内错峰聚拢，共享目标但用不同接近角度，同一颗粒只会被吃一次；吃空后分组散开。</p>
+            <div class="meta"><span>1 勺 = 4 粒</span><span>缸内上限 100 粒</span><span>间隔 150ms</span><span>空罐有提示</span></div>
+          </div>
+        </article>
+
+        <article class="tcard">
+          <div class="shot">
+            <img src="assets/tour-customize.webp" width="904" height="457" loading="lazy" alt="定制页：外观与手感五个维度各一行，右侧下拉与「做一个新的」按钮">
+          </div>
+          <div class="body">
+            <div class="kicker">CUSTOMIZE</div>
+            <h3>五个维度，每个都能换</h3>
+            <p>侧栏那一页叫「定制」，只有三块：外观与手感、显示与光照、Token 统计。五个维度各一行，右边能换一个现成的，或点「做一个新的」把需求交给 AI。</p>
+            <div class="meta"><span>缸体</span><span>灯具</span><span>造景</span><span>鱼群</span><span>投喂习惯</span></div>
+          </div>
+        </article>
+
+        <article class="tcard">
+          <div class="shot">
+            <img src="assets/tour-token.webp" width="1400" height="972" loading="lazy" alt="Token 统计明细：累计用量、距下次兑换、已兑换、已投喂、待投喂">
+          </div>
+          <div class="body">
+            <div class="kicker">LEDGER</div>
+            <h3>三个数，能自己对上</h3>
+            <p>已兑换、已投喂、待投喂，单位都是勺。统计写在插件配置里，重启、换窗口都不清零；投放即刻落盘，不会把喂过的鱼食退回来。</p>
+            <div class="meta"><span>每分钟采样</span><span>每 5M 换 5 勺</span><span>可手算核对</span><span>可重置</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="play" class="tint">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="chip">FOUR MOVES</span>
+          <h2>拖动、放大、敲一下，<br>再喂一勺。</h2>
+        </div>
+        <p>没有按钮墙，也没有面板堆叠。全屏里只有四个动作，其余交给鼠标；操作提示常驻在底部一行。</p>
+      </div>
+
+      <div class="moves">
+        <div class="move">
+          <div class="n">01</div>
+          <h3>左右拖动</h3>
+          <p>缸体绕竖直轴旋转，水面产生延迟、可衰减的晃动，松手后慢慢停下。</p>
+        </div>
+        <div class="move">
+          <div class="n">02</div>
+          <h3>滚轮放大</h3>
+          <p>滚轮或 + − 以当前尺寸为最小，放大到 2.2×；放大后画面沿圆形边界模糊收边。</p>
+        </div>
+        <div class="move">
+          <div class="n">03</div>
+          <h3>单击玻璃</h3>
+          <p>出现局部敲击光圈，鱼群按距离错峰受惊、远离敲击点急逃，约 1～3 秒平复。</p>
+        </div>
+        <div class="move">
+          <div class="n">04</div>
+          <h3>点缸口投喂</h3>
+          <p>舀一勺、落 4 粒，库存减一勺；喂完提示「鱼食已喂完」，攒够 5M 自动补 5 勺。</p>
+        </div>
+      </div>
+      <div class="moves-foot">
+        <span>INPUT / 鼠标拖动 · 滚轮 · 单击</span>
+        <span>EXIT / Esc 或点空白 · 暂无音效与触屏</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="token">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="chip">TOKEN ECONOMY</span>
+          <h2>鱼食不是白给的，<br>也不让你空手开局。</h2>
+        </div>
+        <p>Token 用量在本地换成鱼食：每满 5M 换 5 勺，新装先送 5 勺。全程离线、不计费，也不上传任何数字。</p>
+      </div>
+
+      <div class="ledger">
+        <div class="figures">
+          <div class="fig"><b>5</b><span>勺 · 初装</span><small>装好就能连喂五次；只算库存，不算「已兑换」。</small></div>
+          <div class="fig"><b>100</b><span>勺 · 鱼食罐上限</span><small>到顶后先攒着，喂掉再继续入罐。</small></div>
+          <div class="fig"><b>4</b><span>粒 · 一勺</span><small>点一次缸口落 4 粒；缸内同时最多 100 粒。</small></div>
+          <div class="fig"><b>1</b><span>分钟 · 采样</span><small>读一次 tokenUsage 投影，父子会话一起算。</small></div>
+        </div>
+
+        <div class="ledger-card">
+          <span class="chip">BALANCE</span>
+          <div class="formula">已投喂 + 待投喂<br>= <b>初装 5 勺</b> + 已兑换</div>
+          <p>三个数随时能手算核对。<b>「重置统计」</b>需二次确认（5 秒内再点一次），清空累计与待投喂、重新发放 5 勺初装；缸里已有的鱼食不受影响。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="custom">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="chip">CUSTOM WORKSHOP</span>
+          <h2>不满意就换一个，<br>让 AI 做一个新的。</h2>
+        </div>
+        <p>五个维度各有一个「做一个新的」。点了就跳到新会话，草稿只有三样东西：两个 /skill token、一句需求、一个批次号。</p>
+      </div>
+
+      <div class="custom">
+        <div>
+          <details class="dim" open>
+            <summary>
+              <span class="idx">01</span>
+              <h3>缸体<small>换形状、比例、边框与玻璃质感</small></h3>
+              <span class="plus" aria-hidden="true">+</span>
+            </summary>
+            <div class="dim-body">
+              <p>内置是 40 × 25 × 30 cm 的清透长方缸。想要圆角、异形、更厚的玻璃或更暗的边框，说清楚外形、材质与配色，参考图直接拖进会话。</p>
+              <span class="skill">tinyfish-custom-core + tinyfish-custom-tank</span>
+              <div class="deliver">交付 / assets-src/models/tank/&lt;slug&gt;.glb + 清单条目</div>
+            </div>
+          </details>
+
+          <details class="dim">
+            <summary>
+              <span class="idx">02</span>
+              <h3>灯具<small>换灯型、材质与色温</small></h3>
+              <span class="plus" aria-hidden="true">+</span>
+            </summary>
+            <div class="dim-body">
+              <p>内置是弧形夹灯，跟随宿主深浅色自动判断开灭。定制灯具只改 <b>spot</b> 参数——灯型、材质、色温——不新增光源，不会把缸里的明暗关系搞乱。</p>
+              <span class="skill">tinyfish-custom-core + tinyfish-custom-lamp</span>
+              <div class="deliver">交付 / assets-src/models/lamp/&lt;slug&gt;.glb + 清单条目</div>
+            </div>
+          </details>
+
+          <details class="dim">
+            <summary>
+              <span class="idx">03</span>
+              <h3>水草与造景<small>新增一套石木水草布局与出气点</small></h3>
+              <span class="plus" aria-hidden="true">+</span>
+            </summary>
+            <div class="dim-body">
+              <p>内置苔藓石景、水草丛林、沉木疏林三套。定制版按你给的布局重排，水草保留根部固定的摆动；鱼群会按新的占位数据避让。</p>
+              <span class="skill">tinyfish-custom-core + tinyfish-custom-scape</span>
+              <div class="deliver">交付 / assets-src/models/scene/&lt;slug&gt;.glb + 清单条目</div>
+            </div>
+          </details>
+
+          <details class="dim">
+            <summary>
+              <span class="idx">04</span>
+              <h3>鱼群<small>从参考图新增一个鱼种</small></h3>
+              <span class="plus" aria-hidden="true">+</span>
+            </summary>
+            <div class="dim-body">
+              <p>内置红绿灯 ×5 与小丑鱼 ×2。定制鱼按静态 GLB 走体检登记，泳姿由顶点行波统一驱动，因此<b>不接受自带动画剪辑的资产</b>；每条 1～6 尾，挂在内置鱼种之后。</p>
+              <span class="skill">tinyfish-custom-core + tinyfish-custom-fish</span>
+              <div class="deliver">交付 / assets-src/models/fish/&lt;slug&gt;.glb + 清单条目</div>
+            </div>
+          </details>
+
+          <details class="dim">
+            <summary>
+              <span class="idx">05</span>
+              <h3>投喂习惯<small>调发现延迟、争抢半径与散开时长</small></h3>
+              <span class="plus" aria-hidden="true">+</span>
+            </summary>
+            <div class="dim-body">
+              <p>想让鱼更急一点，或更慢条斯理一点，改的是行为权重：发现延迟、争抢半径、散开时长。切换时只改参数，<b>不重建场景</b>。</p>
+              <span class="skill">tinyfish-custom-core + tinyfish-custom-feeding</span>
+              <div class="deliver">交付 / presets.json 的 feeding.* 条目</div>
+            </div>
+          </details>
+        </div>
+
+        <div class="term">
+          <div class="term-bar"><i></i><i></i><i></i><span>draft · 新会话</span></div>
+          <pre><span class="tk">/tinyfish-custom-core</span> <span class="tk">/tinyfish-custom-tank</span>
+帮我给鱼缸换一个新缸体。
+
+外形（方缸 / 圆角 / 异形）：
+材质与配色：
+参考图（拖进本会话）：
+
+<span class="cm">（批次 loyw3v28-tank：这段内容重复出现时只做一次）</span></pre>
+          <div class="term-foot">
+            <b>这条链路要源码安装。</b>npm 副本只发运行时、不含 custom-asset 脚本，点「做一个新的」时 skill 会直说，不会让你以为坏了。做完必须 build 并重启 DSH 才生效。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="install" class="tint">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="chip">GET STARTED</span>
+          <h2>两条安装路径，<br>推荐第一条。</h2>
+        </div>
+        <p>在已安装 dsh 的环境里执行一条命令，重启一次。想用 AI 定制工厂，再走源码那条。</p>
+      </div>
+
+      <div class="install">
+        <div>
+          <div class="cmd-block">
+            <div class="cmd-label"><b>从 npm 装</b><span>推荐 · 装完即用，不触发构建授权</span></div>
+            <div class="cmd">
+              <button class="copy" data-copy="dsh plugin --profile desktop add dsh-tiny-fish">复制</button>
+              <pre><span class="cm"># 一条命令，装完重启 DSH</span>
+dsh plugin --profile desktop add dsh-tiny-fish</pre>
+            </div>
+          </div>
+
+          <div class="cmd-block">
+            <div class="cmd-label"><b>从源码装</b><span>要自己 build · 只有这条路能用 AI 定制</span></div>
+            <div class="cmd">
+              <button class="copy" data-copy="git clone https://github.com/329604421/dsh-tiny-fish.git&#10;cd dsh-tiny-fish &amp;&amp; npm install &amp;&amp; npm run build&#10;dsh plugin --profile desktop add &quot;$PWD&quot;">复制</button>
+              <pre>git clone https://github.com/329604421/dsh-tiny-fish.git
+cd dsh-tiny-fish &amp;&amp; npm install &amp;&amp; npm run build
+dsh plugin --profile desktop add "$PWD"</pre>
+            </div>
+          </div>
+
+          <p class="note">
+            <b>--profile 要填本机真实存在的名字。</b>先看一眼 <code>ls ~/.dsh/profiles/</code>：桌面版是 desktop，命令行版是 web。填错不会报错，只会静默建一个空 profile 并装进去——表现就是「装上了，但界面里什么都看不见」。
+          </p>
+          <p class="note" style="border-left-color:rgba(232,178,105,.45)">
+            装完重启 DSH：桌面版 <b>Ctrl+R</b>，或退出重开。左侧导航出现鱼缸图标，右下角出现圆形入口。替换版本后也必须重启。
+          </p>
+        </div>
+
+        <div>
+          <dl class="perms">
+            <div class="perm"><dt>网络</dt><dd><b>不联网。</b>Three.js、鱼与造景的 .glb、贴图全部在构建期内联进 lib/，运行时不发请求、不加载远程资源。</dd></div>
+            <div class="perm"><dt>外部服务</dt><dd><b>没有。</b>不需要任何 API key、账号、遥测或云存储。</dd></div>
+            <div class="perm"><dt>读取</dt><dd>会话列表的 tokenUsage 投影（只有数字，只读，用来算鱼食），以及自己的插件配置。</dd></div>
+            <div class="perm"><dt>写入</dt><dd>只有自己的插件配置：ledger、五个预设 id、lightMode、qualityMode。<b>绝不写会话内容、仓库或其它插件。</b></dd></div>
+            <div class="perm"><dt>AI 定制</dt><dd>唯一会写文件的功能，且只写本插件目录下的 assets-src/models/ 与 presets.json，随后要你手动 build 才生效。</dd></div>
+            <div class="perm"><dt>重置</dt><dd>「重置统计」只清本插件的 Token 账本，不动会话数据。</dd></div>
+          </dl>
+
+          <div class="bounds">
+            <span>需要 WebGL2</span>
+            <span>鼠标操作为主</span>
+            <span>暂无音效与触屏</span>
+            <span>定制需源码安装</span>
+            <span>改资产后要重新 build</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="close" id="end">
+    <svg class="tank-mark" viewBox="0 0 800 300" fill="none" stroke="#3FD9B0" stroke-width="1.6" aria-hidden="true">
+      <rect x="100" y="86" width="600" height="196" rx="6"/>
+      <path d="M100 122h600" opacity=".45"/>
+      <path d="M132 86V54h96M668 86V54h-96" opacity=".7"/>
+      <path d="M150 282c60-14 120-20 250-20s190 6 250 20" opacity=".35"/>
+      <path d="M232 282c-6-40 4-72 18-96M252 282c8-34 2-62-10-84M268 282c2-30 12-52 24-70" opacity=".5"/>
+      <path d="M520 282c-8-34-2-64 12-88M540 282c10-28 6-54-4-76" opacity=".5"/>
+      <path d="M380 200c-26 0-46-17-46-38s20-38 46-38c20 0 36 11 44 27l30-24v70l-30-24c-8 16-24 27-44 27z" opacity=".7"/>
+      <circle cx="358" cy="160" r="4" opacity=".7"/>
+      <path d="M600 176c-18 0-32-12-32-27s14-27 32-27c14 0 25 8 30 19l21-17v50l-21-17c-5 11-16 19-30 19z" opacity=".45"/>
+    </svg>
+
+    <div class="wrap close-in">
+      <h2>工作台的右下角，<br>一直有<span class="grad">缸水</span>。</h2>
+      <p>装一条命令，重启一次 DSH。之后每次回到工作台，都能顺手看一眼鱼——它们会记得你喂过，也会在你敲玻璃的时候躲开。</p>
+      <div class="hero-actions" style="justify-content:center">
+        <button class="btn btn-primary" data-copy="dsh plugin --profile desktop add dsh-tiny-fish" data-label="复制安装命令">
+          <span data-copy-label>复制安装命令</span><span class="ink" aria-hidden="true">⧉</span>
+        </button>
+        <a class="btn btn-ghost" href="https://github.com/329604421/dsh-tiny-fish" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+        <a class="btn btn-ghost" href="https://www.npmjs.com/package/dsh-tiny-fish" target="_blank" rel="noopener">npm <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="close-meta">
+        npm 0.2.0 已发布　·　DSH 市场收录已提交　·　MIT 开源<br>
+        出自 <a href="https://memorymap.cn" target="_blank" rel="noopener">memorymap.cn</a>　·　作者 杜春生 @329604421
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div class="foot-credit">
+      © 2026 小鱼缸 TinyFish · MIT License · 作者 杜春生 @329604421<br>
+      鱼缸、鱼群与布景由 Kimi 3.1 Pro 编写，程序代码由 DeepSeek-V4.1 Flash 编写。
+    </div>
+    <div class="foot-links">
+      <a href="https://github.com/329604421/dsh-tiny-fish" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.npmjs.com/package/dsh-tiny-fish" target="_blank" rel="noopener">npm</a>
+      <a href="https://memorymap.cn" target="_blank" rel="noopener">memorymap.cn</a>
+      <a href="#top">回到顶部 ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  // 阅读进度
+  var bar = $('#progress');
+  function onScroll() {
+    var el = document.documentElement;
+    var max = el.scrollHeight - el.clientHeight;
+    bar.style.width = (max > 0 ? (el.scrollTop / max) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // 导航高亮
+  var anchors = $$('.nav-links .anchor');
+  var map = { tour: '#tour', token: '#token', custom: '#custom', install: '#install' };
+  if ('IntersectionObserver' in window) {
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var href = map[en.target.id];
+        anchors.forEach(function (a) {
+          if (a.getAttribute('href') === href) a.setAttribute('aria-current', 'true');
+          else a.removeAttribute('aria-current');
+        });
+      });
+    }, { rootMargin: '-45% 0px -48% 0px' });
+    Object.keys(map).forEach(function (id) {
+      var s = document.getElementById(id);
+      if (s) spy.observe(s);
+    });
+  }
+
+  // 复制
+  $$('[data-copy]').forEach(function (btn) {
+    var label = btn.querySelector('[data-copy-label]');
+    var idle = label ? label.textContent : btn.textContent;
+    btn.addEventListener('click', function () {
+      var text = btn.getAttribute('data-copy');
+      function done(ok) {
+        var el = label || btn;
+        el.textContent = ok ? '已复制 ✓' : '复制失败';
+        btn.classList.add('ok');
+        clearTimeout(btn._t);
+        btn._t = setTimeout(function () {
+          el.textContent = idle;
+          btn.classList.remove('ok');
+        }, 2000);
+      }
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+        return;
+      }
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      document.body.removeChild(ta);
+      done(ok);
+    });
+  });
+
+  // 渐入（带兜底扫描：快速滚动或 IO 漏判时也能显示）
+  if ('IntersectionObserver' in window) {
+    var targets = $$('.sec-head, .tour-grid, .moves, .moves-foot, .ledger, .custom, .install, .close-in');
+    targets.forEach(function (el) { el.classList.add('reveal'); });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { rootMargin: '160px 0px 160px 0px' });
+    targets.forEach(function (el) { io.observe(el); });
+
+    var ticking = false;
+    function sweep() {
+      var vh = window.innerHeight || 800;
+      targets.forEach(function (el) {
+        if (el.classList.contains('in')) return;
+        var r = el.getBoundingClientRect();
+        if (r.top < vh + 160 && r.bottom > -160) { el.classList.add('in'); io.unobserve(el); }
+      });
+      ticking = false;
+    }
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(sweep);
+    }, { passive: true });
+    window.addEventListener('resize', sweep);
+    sweep();
+  }
+})();
+</script>
+
+
+</body>
+</html>

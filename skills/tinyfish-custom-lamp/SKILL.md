@@ -1,6 +1,6 @@
 # 定制灯具
 
-> 前置：先读完 `aquarium-custom-core`。
+> 前置：先读完 `tinyfish-custom-core`。
 > 细则底稿：`<ROOT>/docs/guides/鱼缸顶灯3D资产制作指南.md`
 
 ---

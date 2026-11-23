@@ -1,6 +1,6 @@
 # 定制投喂习惯
 
-> 前置：先读完 `aquarium-custom-core`。
+> 前置：先读完 `tinyfish-custom-core`。
 > 细则底稿：`<ROOT>/docs/guides/投喂习惯与动作制作指南.md`
 
 ---

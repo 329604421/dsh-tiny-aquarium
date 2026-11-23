@@ -14,9 +14,12 @@ import { WELCOME_SCOOPS } from '../src/token-ledger.js';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const require = createRequire(import.meta.url);
 const code = await readFile(path.join(root, 'lib', 'client.js'), 'utf8');
-// 插件 id 由包名推导（去掉 dsh- 前缀），三处断言都从这一份推导，改名时不用再逐处改。
+// 插件 id（NS）以 cordis.patch.yml 为准：包名只对 npm 负责，id 决定 slot / locale /
+// skill 的命名空间，两者的连字符写法允许不同（dsh-tiny-fish ↔ tinyfish）。
 const pkg = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8'));
-const NS = pkg.name.replace(/^dsh-/, '');
+const patch = await readFile(path.join(root, 'cordis.patch.yml'), 'utf8');
+const NS = (patch.match(/^\s*-\s*id:\s*([\w-]+)/m) || [])[1];
+assert.ok(NS, 'cordis.patch.yml declares the plugin id');
 
 let definition;
 let injectedCss = '';

@@ -1,6 +1,6 @@
 # 定制鱼群
 
-> 前置：先读完 `aquarium-custom-core`。
+> 前置：先读完 `tinyfish-custom-core`。
 > 细则底稿：`<ROOT>/docs/guides/鱼种构建指南.md`（九步全流程、参考图筛选、贴图校正都在里面）
 
 ---
